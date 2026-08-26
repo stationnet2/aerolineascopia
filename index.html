@@ -174,10 +174,22 @@
   .result-meta { font-size: 12px; color: var(--muted); margin-top: 3px; }
   .result-price { font-family: 'IBM Plex Mono', monospace; font-weight: 700; font-size: 18px; color: var(--teal); white-space: nowrap; }
   .result-link { background: var(--coral); color: white; padding: 8px 14px; border-radius: 9px; font-size: 12.5px; font-weight: 700; text-decoration: none; white-space: nowrap; }
+  .result-extras { display: flex; gap: 12px; margin-top: 8px; width: 100%; }
+  .result-extras a { font-size: 12px; color: var(--teal); font-weight: 600; text-decoration: none; }
+  .result-extras a:hover { text-decoration: underline; }
   .alert-card { display: flex; align-items: center; justify-content: space-between; gap: 14px; border: 1px solid #E7EFEC; border-radius: 14px; padding: 14px 16px; flex-wrap: wrap; }
   .alert-delete { background: transparent; border: 1.5px solid #F3C6C0; color: #D92D20; border-radius: 9px; padding: 7px 12px; font-size: 12px; font-weight: 700; cursor: pointer; }
   .spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid rgba(15,157,141,.25); border-top-color: var(--teal); border-radius: 50%; animation: spin .7s linear infinite; margin-right: 8px; vertical-align: -2px; }
   @keyframes spin { to { transform: rotate(360deg); } }
+  .offer-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; margin-top: 14px; }
+  .offer-card { border: 1px solid #E7EFEC; border-radius: 14px; padding: 16px; background: white; }
+  .offer-dest { font-weight: 700; font-size: 15px; color: var(--teal-dark); }
+  .offer-route { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .offer-price { font-family: 'IBM Plex Mono', monospace; font-weight: 700; font-size: 20px; color: var(--coral); margin-top: 8px; }
+  .offer-date { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .offer-link { display: inline-block; margin-top: 10px; background: var(--teal-dark); color: white; padding: 7px 14px; border-radius: 8px; font-size: 12px; font-weight: 700; text-decoration: none; }
+  .offer-extras { display: flex; gap: 10px; margin-top: 8px; }
+  .offer-extras a { font-size: 11px; color: var(--teal); font-weight: 600; }
 
   footer { background: var(--teal-dark); color: rgba(246,250,249,0.55); padding: 44px 0 28px; font-size: 13px; }
   .footer-grid { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
@@ -356,12 +368,28 @@
 
     <div class="app-box">
       <div class="app-tabs">
-        <button class="app-tab active" data-tab="buscar" type="button">Buscar vuelos</button>
+        <button class="app-tab active" data-tab="ofertas" type="button">Ofertas destacadas</button>
+        <button class="app-tab" data-tab="buscar" type="button">Buscar vuelos</button>
         <button class="app-tab" data-tab="alerta" type="button">Crear alerta</button>
         <button class="app-tab" data-tab="mias" type="button">Mis alertas <span id="misAlertasCount"></span></button>
       </div>
 
-      <div class="app-panel active" id="panel-buscar">
+      <!-- OFERTAS DESTACADAS -->
+      <div class="app-panel active" id="panel-ofertas">
+        <form id="offersForm" class="app-form">
+          <div class="field field-wide">
+            <label>Desde qué ciudad querés ver ofertas</label>
+            <select id="offersOrigin" required><option value="">Elegí ciudad de origen</option></select>
+          </div>
+          <button type="submit" class="btn btn-coral" style="width:100%; justify-content:center; margin-top:6px;">Ver ofertas</button>
+        </form>
+        <div id="offersStatus" class="app-status"></div>
+        <div id="offersResults" class="offer-grid"></div>
+        <p class="app-note">Mostramos las mejores ofertas reales que encontramos desde tu ciudad a distintos destinos. Sin fecha fija — agarrá la que más te convenga.</p>
+      </div>
+
+      <!-- BUSCAR VUELOS -->
+      <div class="app-panel" id="panel-buscar">
         <form id="searchForm" class="app-form">
           <div class="field">
             <label>Desde</label>
@@ -379,7 +407,7 @@
             </div>
           </div>
           <div class="field">
-            <label>Fecha de ida</label>
+            <label>Fecha de ida <span style="font-weight:400;color:var(--muted)">(opcional — dejalo vacío para ver las mejores ofertas)</span></label>
             <input type="date" id="searchDeparture">
           </div>
           <div class="field" id="searchReturnField" style="display:none">
@@ -392,6 +420,7 @@
         <div id="searchResults" class="results-list"></div>
       </div>
 
+      <!-- CREAR ALERTA -->
       <div class="app-panel" id="panel-alerta">
         <form id="alertForm" class="app-form">
           <div class="field">
@@ -420,6 +449,7 @@
         <p class="app-note">Por ahora, el aviso de "bajó el precio" lo mandamos por notificación push solo a través de la app (todavía no publicada). Mientras tanto, tu alerta ya queda guardada y monitoreada — volvé a esta misma página en este mismo navegador para ver en "Mis alertas" si encontramos algo mejor.</p>
       </div>
 
+      <!-- MIS ALERTAS -->
       <div class="app-panel" id="panel-mias">
         <div id="misAlertasList" class="results-list"><p class="app-note">Todavía no creaste ninguna alerta desde este navegador.</p></div>
       </div>
@@ -519,10 +549,6 @@
 </script>
 
 <!-- ================== APP FUNCIONAL: buscar vuelos + alertas ================== -->
-<!-- Usa el mismo Firestore y las mismas funciones de precios que la app de
-     Android — nada de esto es una simulación. La cuenta de usuario es
-     anónima (Firebase Auth), persistida en este navegador: por eso "Mis
-     alertas" solo muestra lo creado desde este mismo dispositivo/navegador. -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
   import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
@@ -546,18 +572,38 @@
   // ---------- Cargar destinos reales desde Firestore (lectura pública) ----------
   let destinations = [];
   async function loadDestinations() {
-    const snap = await getDocs(collection(db, "destinations"));
-    destinations = snap.docs
-      .map((d) => ({ id: d.id, ...d.data() }))
-      .filter((d) => d.airports && d.airports.length)
-      .sort((a, b) => (a.displayName || "").localeCompare(b.displayName || ""));
+    try {
+      const snap = await getDocs(collection(db, "destinations"));
+      destinations = snap.docs
+        .map((d) => ({ id: d.id, ...d.data() }))
+        .filter((d) => d.airports && d.airports.length)
+        .sort((a, b) => (a.displayName || "").localeCompare(b.displayName || ""));
 
-    const opts = destinations.map((d) => `<option value="${d.id}">${d.displayName}${d.country ? " — " + d.country : ""}</option>`).join("");
-    ["searchOrigin", "searchDest", "alertOrigin", "alertDest"].forEach((selId) => {
-      document.getElementById(selId).insertAdjacentHTML("beforeend", opts);
-    });
+      if (!destinations.length) {
+        throw new Error("La colección destinations está vacía.");
+      }
+
+      const opts = destinations.map((d) => `<option value="${d.id}">${d.displayName}${d.country ? " — " + d.country : ""}</option>`).join("");
+      ["searchOrigin", "searchDest", "alertOrigin", "alertDest", "offersOrigin"].forEach((selId) => {
+        document.getElementById(selId).insertAdjacentHTML("beforeend", opts);
+      });
+    } catch (err) {
+      const msg = "No se pudieron cargar los destinos. " + (err.message || "");
+      document.getElementById("searchStatus").textContent = msg;
+      document.getElementById("alertStatus").textContent = msg;
+      document.getElementById("offersStatus").textContent = msg;
+      console.error(err);
+    }
   }
 
+  function cityName(id) {
+    const c = destinations.find((d) => d.id === id);
+    return c ? c.displayName : id;
+  }
+  function cityCountry(id) {
+    const c = destinations.find((d) => d.id === id);
+    return c ? c.country : "";
+  }
   function primaryAirportCode(cityId) {
     const city = destinations.find((d) => d.id === cityId);
     if (!city) return null;
@@ -565,7 +611,19 @@
     return primary ? primary.code : null;
   }
 
-  // ---------- Armar el link de reserva (misma lógica que la app y el robot) ----------
+  // ---------- Links de afiliados ----------
+  function klookHotelLink(destId) {
+    const city = destinations.find(d => d.id === destId);
+    if (!city || !city.klookSvalue) return null;
+    return `https://www.klook.com/es-ES/search/?query=${encodeURIComponent(city.displayName)}`;
+  }
+  function kkdayLink(destId) {
+    const city = destinations.find(d => d.id === destId);
+    if (!city) return null;
+    return `https://www.kkday.com/es/search?keyword=${encodeURIComponent(city.displayName)}`;
+  }
+
+  // ---------- Armar el link de reserva ----------
   function ddmm(iso) {
     const [, m, d] = iso.slice(0, 10).split("-");
     return d + m;
@@ -589,6 +647,58 @@
     const params = new URLSearchParams({ locale: "es", marker: AFFILIATE_MARKER });
     return `https://www.aviasales.com${path}?${params.toString()}`;
   }
+
+  // ---------- Ofertas destacadas (special-offers) ----------
+  document.getElementById("offersForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const statusEl = document.getElementById("offersStatus");
+    const resultsEl = document.getElementById("offersResults");
+    resultsEl.innerHTML = "";
+    statusEl.className = "app-status";
+    statusEl.innerHTML = '<span class="spinner"></span>Buscando ofertas...';
+
+    const originId = document.getElementById("offersOrigin").value;
+    const originCode = primaryAirportCode(originId);
+    if (!originCode) {
+      statusEl.className = "app-status err";
+      statusEl.textContent = "Elegí una ciudad de origen.";
+      return;
+    }
+
+    try {
+      const res = await fetch("https://api-alertatrip.descuentonadrian.workers.dev/special-offers?origin=" + originCode + "&currency=usd");
+      const json = await res.json();
+      if (!json.success || !Array.isArray(json.data) || !json.data.length) {
+        statusEl.textContent = "No encontramos ofertas destacadas desde esa ciudad por ahora.";
+        return;
+      }
+      statusEl.textContent = "";
+      const top = json.data.slice(0, 8);
+      resultsEl.innerHTML = top.map((entry) => {
+        const link = buildBookingLink(entry);
+        const destName = entry.destination_name || entry.destination || "Destino";
+        const destCityId = destinations.find(d => d.airports.some(a => a.code === entry.destination_airport))?.id;
+        const klook = destCityId ? klookHotelLink(destCityId) : null;
+        const kkday = destCityId ? kkdayLink(destCityId) : null;
+        return `
+          <div class="offer-card">
+            <div class="offer-dest">${destName}</div>
+            <div class="offer-route">${entry.origin_airport || originCode} → ${entry.destination_airport || entry.destination}</div>
+            <div class="offer-price">USD ${entry.price}</div>
+            <div class="offer-date">${entry.departure_at ? entry.departure_at.slice(0,10) : ''} · ${entry.airline_title || entry.airline || ''}</div>
+            ${link ? `<a class="offer-link" href="${link}" target="_blank" rel="noopener">Ver oferta</a>` : ''}
+            ${(klook || kkday) ? `<div class="offer-extras">
+              ${klook ? `<a href="${klook}" target="_blank" rel="noopener">🏨 Hoteles</a>` : ''}
+              ${kkday ? `<a href="${kkday}" target="_blank" rel="noopener">🎯 Excursiones</a>` : ''}
+            </div>` : ''}
+          </div>
+        `;
+      }).join("");
+    } catch (err) {
+      statusEl.className = "app-status err";
+      statusEl.textContent = "No pudimos conectar con el buscador. Si esto persiste, las funciones de Cloudflare no están activas todavía.";
+    }
+  });
 
   // ---------- Buscar vuelos ----------
   document.getElementById("searchForm").addEventListener("submit", async (e) => {
@@ -617,14 +727,15 @@
       origin: originCode, destination: destCode, currency: "usd",
       one_way: isRoundTrip ? "false" : "true",
     });
+    // Si no hay fecha, no mandamos departure_at — la API devuelve las mejores ofertas generales
     if (departure) params.set("departure_at", departure);
     if (isRoundTrip && ret) params.set("return_at", ret);
 
     try {
-      const res = await fetch("/search-flights?" + params.toString());
+      const res = await fetch("https://api-alertatrip.descuentonadrian.workers.dev/search-flights?" + params.toString());
       const json = await res.json();
       if (!json.success || !Array.isArray(json.data) || !json.data.length) {
-        statusEl.textContent = "No encontramos precios para esa búsqueda. Probá con otras fechas.";
+        statusEl.textContent = "No encontramos precios para esa búsqueda. Probá sin fecha para ver las mejores ofertas disponibles.";
         return;
       }
       statusEl.textContent = "";
@@ -634,20 +745,26 @@
         const dates = entry.return_at
           ? `${entry.departure_at.slice(0, 10)} → ${entry.return_at.slice(0, 10)}`
           : entry.departure_at.slice(0, 10);
+        const klook = klookHotelLink(destId);
+        const kkday = kkdayLink(destId);
         return `
           <div class="result-card">
-            <div>
+            <div style="flex:1;min-width:200px;">
               <div class="result-route">${entry.origin_airport || originCode} → ${entry.destination_airport || destCode}</div>
-              <div class="result-meta">${dates} · ${entry.airline || ''}</div>
+              <div class="result-meta">${dates} · ${entry.airline_title || entry.airline || ''}</div>
             </div>
             <div class="result-price">USD ${entry.price}</div>
             ${link ? `<a class="result-link" href="${link}" target="_blank" rel="noopener">Ver oferta</a>` : ''}
+            ${(klook || kkday) ? `<div class="result-extras">
+              ${klook ? `<a href="${klook}" target="_blank" rel="noopener">🏨 Hoteles en Klook</a>` : ''}
+              ${kkday ? `<a href="${kkday}" target="_blank" rel="noopener">🎯 Excursiones en KKday</a>` : ''}
+            </div>` : ''}
           </div>
         `;
       }).join("");
     } catch (err) {
       statusEl.className = "app-status err";
-      statusEl.textContent = "No pudimos conectar con el buscador. Probá de nuevo en un rato.";
+      statusEl.textContent = "No pudimos conectar con el buscador. Si esto persiste, las funciones de Cloudflare no están activas todavía.";
     }
   });
 
@@ -699,11 +816,6 @@
   });
 
   // ---------- Mis alertas ----------
-  function cityName(id) {
-    const c = destinations.find((d) => d.id === id);
-    return c ? c.displayName : id;
-  }
-
   async function loadMisAlertas() {
     const listEl = document.getElementById("misAlertasList");
     const countEl = document.getElementById("misAlertasCount");
@@ -747,10 +859,7 @@
   }
 
   onAuthStateChanged(auth, () => loadMisAlertas());
-
-  loadDestinations().catch(() => {
-    document.getElementById("searchStatus").textContent = "No pudimos cargar la lista de destinos. Recargá la página.";
-  });
+  loadDestinations();
 </script>
 
 </body>
