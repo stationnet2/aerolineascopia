@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panel — AlertaTrip</title>
+<style>
+  :root { --teal: #0F9D8D; --teal-dark: #0B3D37; --coral: #FF7A45; --bg: #F5F7FB; --border: #E0E6EF; --text: #172033; --muted: #667085; }
+  * { box-sizing: border-box; }
+  body { font-family: -apple-system, "Segoe UI", Arial, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 24px; }
+  h1 { font-size: 22px; margin: 0 0 4px; }
+  .sub { color: var(--muted); font-size: 13px; margin-bottom: 24px; }
+  .card { background: white; border: 1px solid var(--border); border-radius: 16px; padding: 20px; margin-bottom: 20px; }
+  input, select, textarea { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 10px; font-size: 14px; margin-top: 4px; font-family: inherit; }
+  label { font-size: 12px; font-weight: 700; color: var(--muted); display: block; margin-top: 12px; }
+  label:first-child { margin-top: 0; }
+  button { background: var(--teal); color: white; border: none; padding: 10px 18px; border-radius: 10px; font-weight: 700; cursor: pointer; font-size: 14px; margin-top: 14px; }
+  button.coral { background: var(--coral); }
+  button.ghost { background: transparent; color: var(--muted); border: 1px solid var(--border); }
+  button.danger { background: #D92D20; }
+  table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 13px; }
+  th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); }
+  th { color: var(--muted); font-weight: 700; }
+  .row { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; }
+  .row > div { flex: 1; min-width: 140px; }
+  .thumb { width: 40px; height: 40px; border-radius: 8px; object-fit: cover; background: #eee; }
+  .tag { display: inline-block; background: #E3F5F1; color: var(--teal-dark); border-radius: 20px; padding: 2px 8px; font-size: 11px; margin-right: 4px; }
+  #gate { max-width: 360px; margin: 80px auto; text-align: center; }
+  #app { display: none; }
+  .airports-list { font-size: 12px; }
+  .airports-list input { margin-bottom: 6px; }
+  .msg { font-size: 13px; padding: 8px 12px; border-radius: 8px; margin-top: 10px; }
+  .msg.ok { background: #EAF7EE; color: #18864B; }
+  .msg.err { background: #FFF1F0; color: #D92D20; }
+</style>
+</head>
+<body>
+
+<div id="gate">
+  <h1>Panel AlertaTrip</h1>
+  <p class="sub">Ingresá la clave de administrador para continuar.</p>
+  <input type="password" id="keyInput" placeholder="Clave de administrador">
+  <button onclick="unlock()">Entrar</button>
+  <p id="gateMsg" class="msg" style="display:none"></p>
+</div>
+
+<div id="app">
+  <h1>Panel AlertaTrip</h1>
+  <p class="sub">Cargá destinos y qué se muestra como "populares" por país, sin tocar código ni Firebase Console.</p>
+
+  <div class="card">
+    <b>Agregar / editar destino</b>
+    <div class="row">
+      <div>
+        <label>ID (sin espacios, ej: bariloche)</label>
+        <input id="d_id">
+      </div>
+      <div>
+        <label>Nombre visible</label>
+        <input id="d_name">
+      </div>
+      <div>
+        <label>País</label>
+        <input id="d_country">
+      </div>
+    </div>
+    <label>URL de foto (opcional)</label>
+    <input id="d_image" placeholder="https://...">
+    <div class="row">
+      <div>
+        <label>Klook — stype</label>
+        <input id="d_klookStype" value="city">
+      </div>
+      <div>
+        <label>Klook — svalue</label>
+        <input id="d_klookSvalue">
+      </div>
+      <div>
+        <label>Klook — city_id (si es distinto de svalue)</label>
+        <input id="d_klookCityId">
+      </div>
+    </div>
+    <label>Aeropuertos (uno por línea: CÓDIGO, Nombre, lat, lng, principal=si/no)</label>
+    <textarea id="d_airports" rows="3" placeholder="BRC, Bariloche, -41.15, -71.16, si"></textarea>
+    <button onclick="saveDestination()">Guardar destino</button>
+    <p id="dMsg" class="msg" style="display:none"></p>
+  </div>
+
+  <div class="card">
+    <b>Destinos populares por país</b>
+    <p class="sub">Un documento por código de país (2 letras, ej AR, BR, UY) o "default" para el resto del mundo.</p>
+    <div class="row">
+      <div>
+        <label>Código de país (o "default")</label>
+        <input id="p_country" placeholder="BR">
+      </div>
+    </div>
+    <label>IDs de ciudades, separados por coma (deben existir como destino)</label>
+    <input id="p_ids" placeholder="sao_paulo, rio_de_janeiro, buenos_aires, miami, madrid">
+    <button onclick="savePopular()">Guardar lista</button>
+    <p id="pMsg" class="msg" style="display:none"></p>
+  </div>
+
+  <div class="card">
+    <b>Destinos cargados</b>
+    <table id="destTable"><thead><tr><th>Foto</th><th>ID</th><th>Nombre</th><th>País</th><th>Aeropuertos</th><th></th></tr></thead><tbody></tbody></table>
+  </div>
+
+  <div class="card">
+    <b>Populares por país cargados</b>
+    <table id="popTable"><thead><tr><th>País</th><th>IDs</th><th></th></tr></thead><tbody></tbody></table>
+  </div>
+</div>
+
+<script>
+const FN_BASE = '/admin-destinations';
+let adminKey = localStorage.getItem('at_admin_key') || '';
+
+async function api(method, params, body) {
+  const url = FN_BASE + (params ? '?' + new URLSearchParams(params).toString() : '');
+  const res = await fetch(url, {
+    method,
+    headers: { 'x-admin-key': adminKey, 'Content-Type': 'application/json' },
+    body: body ? JSON.stringify(body) : undefined,
+  });
+  const json = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(json.error || ('HTTP ' + res.status));
+  return json;
+}
+
+async function unlock() {
+  adminKey = document.getElementById('keyInput').value.trim();
+  try {
+    await api('GET', { collection: 'destinations' });
+    localStorage.setItem('at_admin_key', adminKey);
+    document.getElementById('gate').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    loadAll();
+  } catch (e) {
+    showMsg('gateMsg', 'Clave incorrecta o error de conexión: ' + e.message, false);
+  }
+}
+
+function showMsg(id, text, ok) {
+  const el = document.getElementById(id);
+  el.textContent = text;
+  el.className = 'msg ' + (ok ? 'ok' : 'err');
+  el.style.display = 'block';
+  setTimeout(() => el.style.display = 'none', 4000);
+}
+
+function parseAirports(text) {
+  return text.split('\n').map(l => l.trim()).filter(Boolean).map(line => {
+    const [code, name, lat, lng, primary] = line.split(',').map(s => s.trim());
+    return { code: code.toUpperCase(), name: name || code, lat: parseFloat(lat), lng: parseFloat(lng), isPrimary: (primary || '').toLowerCase().startsWith('s') };
+  });
+}
+
+async function saveDestination() {
+  try {
+    const id = document.getElementById('d_id').value.trim();
+    if (!id) throw new Error('Falta el ID');
+    const data = {
+      displayName: document.getElementById('d_name').value.trim(),
+      country: document.getElementById('d_country').value.trim(),
+      imageUrl: document.getElementById('d_image').value.trim() || null,
+      klookStype: document.getElementById('d_klookStype').value.trim() || 'city',
+      klookSvalue: document.getElementById('d_klookSvalue').value.trim() || null,
+      klookCityId: document.getElementById('d_klookCityId').value.trim() || null,
+      airports: parseAirports(document.getElementById('d_airports').value),
+    };
+    await api('POST', null, { collection: 'destinations', id, data });
+    showMsg('dMsg', 'Guardado: ' + id, true);
+    loadAll();
+  } catch (e) {
+    showMsg('dMsg', 'Error: ' + e.message, false);
+  }
+}
+
+async function savePopular() {
+  try {
+    const country = document.getElementById('p_country').value.trim();
+    if (!country) throw new Error('Falta el código de país');
+    const ids = document.getElementById('p_ids').value.split(',').map(s => s.trim()).filter(Boolean);
+    await api('POST', null, { collection: 'popular_destinations', id: country, data: { cityIds: ids } });
+    showMsg('pMsg', 'Guardado: ' + country, true);
+    loadAll();
+  } catch (e) {
+    showMsg('pMsg', 'Error: ' + e.message, false);
+  }
+}
+
+async function deleteDoc(collection, id) {
+  if (!confirm('¿Borrar "' + id + '" de ' + collection + '?')) return;
+  await api('DELETE', { collection, id });
+  loadAll();
+}
+
+async function loadAll() {
+  const [destRes, popRes] = await Promise.all([
+    api('GET', { collection: 'destinations' }),
+    api('GET', { collection: 'popular_destinations' }),
+  ]);
+
+  const destBody = document.querySelector('#destTable tbody');
+  destBody.innerHTML = destRes.docs.sort((a, b) => a.id.localeCompare(b.id)).map(d => `
+    <tr>
+      <td>${d.imageUrl ? `<img class="thumb" src="${d.imageUrl}">` : '—'}</td>
+      <td>${d.id}</td>
+      <td>${d.displayName || ''}</td>
+      <td>${d.country || ''}</td>
+      <td>${(d.airports || []).map(a => `<span class="tag">${a.code}</span>`).join('')}</td>
+      <td><button class="ghost" onclick='editDestination(${JSON.stringify(d).replace(/'/g, "&#39;")})'>Editar</button>
+          <button class="danger" onclick="deleteDoc('destinations','${d.id}')">Borrar</button></td>
+    </tr>
+  `).join('');
+
+  const popBody = document.querySelector('#popTable tbody');
+  popBody.innerHTML = popRes.docs.sort((a, b) => a.id.localeCompare(b.id)).map(p => `
+    <tr>
+      <td><b>${p.id}</b></td>
+      <td>${(p.cityIds || []).join(', ')}</td>
+      <td><button class="danger" onclick="deleteDoc('popular_destinations','${p.id}')">Borrar</button></td>
+    </tr>
+  `).join('');
+}
+
+function editDestination(d) {
+  document.getElementById('d_id').value = d.id;
+  document.getElementById('d_name').value = d.displayName || '';
+  document.getElementById('d_country').value = d.country || '';
+  document.getElementById('d_image').value = d.imageUrl || '';
+  document.getElementById('d_klookStype').value = d.klookStype || 'city';
+  document.getElementById('d_klookSvalue').value = d.klookSvalue || '';
+  document.getElementById('d_klookCityId').value = d.klookCityId || '';
+  document.getElementById('d_airports').value = (d.airports || []).map(a => `${a.code}, ${a.name}, ${a.lat}, ${a.lng}, ${a.isPrimary ? 'si' : 'no'}`).join('\n');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+if (adminKey) {
+  document.getElementById('gate').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  loadAll().catch(() => {
+    localStorage.removeItem('at_admin_key');
+    document.getElementById('gate').style.display = 'block';
+    document.getElementById('app').style.display = 'none';
+  });
+}
+</script>
+
+</body>
+</html>
