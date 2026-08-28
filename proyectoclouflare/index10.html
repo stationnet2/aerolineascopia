@@ -168,7 +168,7 @@ footer a{text-decoration:none;color:rgba(246,250,249,0.55)}footer a:hover{color:
 </style>
 </head>
 <body>
-<nav><div class="nav-inner"><a class="brand" href="#top"><svg width="34" height="34" viewBox="0 0 84 84"><rect width="84" height="84" rx="20" fill="#0F9D8D"/><path d="M42 15 L67 64 L55.5 64 L42 37 L28.5 64 L17 64 Z" fill="#F6FAF9"/><circle cx="42" cy="15" r="5.5" fill="#FF7A45"/></svg>alertatrip</a><div class="nav-links"><a href="#board">Qué hace</a><a href="#how">Cómo funciona</a><a href="#destinos">Destinos</a></div><a class="btn btn-coral" href="#buscador" onclick="activateTab('alerta'); return false;">Crear alerta</a><a href="#" id="authNavBtn" onclick="openAuthModal();return false;" style="background:var(--coral);color:white;padding:8px 16px;border-radius:20px;font-size:13px;font-weight:700;text-decoration:none;margin-left:12px">Ingresar</a></div></nav>
+<nav><div class="nav-inner"><a class="brand" href="#top"><svg width="34" height="34" viewBox="0 0 84 84"><rect width="84" height="84" rx="20" fill="#0F9D8D"/><path d="M42 15 L67 64 L55.5 64 L42 37 L28.5 64 L17 64 Z" fill="#F6FAF9"/><circle cx="42" cy="15" r="5.5" fill="#FF7A45"/></svg>alertatrip</a><div class="nav-links"><a href="#board">Qué hace</a><a href="#how">Cómo funciona</a><a href="#destinos">Destinos</a></div><a class="btn btn-coral" href="#buscador" onclick="activateTab('alerta'); return false;">Crear alerta</a></div></nav>
 
 <header class="hero" id="top"><div class="wrap hero-grid"><div><span class="eyebrow"><span class="dot"></span>Cobertura internacional · precios en USD</span><h1>No busques vuelos<br>todo el día. <em>Que te<br>busquen los precios.</em></h1><p class="lede">Elegí de dónde a dónde querés viajar, configurá tu alerta una vez, y te avisamos apenas encontramos un precio mejor — vuelos, hoteles y excursiones, estés donde estés.</p><div class="hero-ctas"><a href="#ofertas" class="btn btn-coral">Ver ofertas destacadas</a><a href="#how" class="btn btn-ghost">Ver cómo funciona</a></div><div class="hero-stats"><div><b>76+</b>ciudades cubiertas</div><div><b>USD</b>precios siempre claros</div><div><b>24/7</b>chequeo automático</div></div></div><div class="pass" id="passCard"><span class="pass-badge">¡Bajó el precio!</span><div class="pass-row"><div><div class="pass-route"><span id="passOrigin">EZE</span><span class="arrow">✈</span><span id="passDest">MAD</span></div><div class="pass-city" id="passCities">Buenos Aires → Madrid</div></div><div class="pass-meta">IDA Y VUELTA<br><span id="passDates">08 OCT — 19 OCT</span></div></div><div class="pass-strip"><svg class="plane" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M1 9.5 4 8l2.5 1L10 6.5l3.5-2c.6-.35 1.5.25 1.2.9l-1.5 2.9-3.3 1.9.9 3.6c.15.6-.6 1.1-1.05.7L7.5 12l-2 1.2-.3-2.1L3 9.9z"/></svg><div class="pass-line"><span class="dot"></span></div></div><div class="pass-price-row"><span class="pass-price-label">Precio por persona</span><span class="pass-price"><span class="old">USD 890</span><span class="new" id="passPrice">USD 553</span></span></div></div></div></div></header>
 
@@ -271,49 +271,28 @@ function getCityImage(cityId,airportCode){
   return 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=600&q=80';
 }
 
-// ===== AUTH: EMAIL/PASSWORD =====
+// ===== AUTH: iniciar sesión anónima inmediatamente =====
+let authReady=false;
 let currentUser=null;
-
-function openAuthModal(){document.getElementById('authModal').style.display='flex';showLogin();}
-function closeAuthModal(){document.getElementById('authModal').style.display='none';}
-function showLogin(){document.getElementById('authLoginPanel').style.display='block';document.getElementById('authRegisterPanel').style.display='none';}
-function showRegister(){document.getElementById('authLoginPanel').style.display='none';document.getElementById('authRegisterPanel').style.display='block';}
-
-async function handleLogin(){
-  const btn=document.getElementById('loginBtn');const errEl=document.getElementById('loginError');
-  const email=document.getElementById('loginEmail').value.trim();const pass=document.getElementById('loginPassword').value;
-  if(!email||!pass){errEl.textContent='Completá email y contraseña.';errEl.style.display='block';return;}
-  btn.textContent='Ingresando...';btn.disabled=true;errEl.style.display='none';
-  try{await signInWithEmailAndPassword(auth,email,pass);closeAuthModal();}
-  catch(e){const msgs={'auth/user-not-found':'No existe una cuenta con ese email.','auth/wrong-password':'Contraseña incorrecta.','auth/invalid-credential':'Email o contraseña incorrectos.','auth/invalid-email':'Email no válido.'};errEl.textContent=msgs[e.code]||e.message;errEl.style.display='block';}
-  finally{btn.textContent='Ingresar';btn.disabled=false;}
-}
-async function handleRegister(){
-  const btn=document.getElementById('regBtn');const errEl=document.getElementById('regError');
-  const email=document.getElementById('regEmail').value.trim();const pass=document.getElementById('regPassword').value;const pass2=document.getElementById('regPassword2').value;
-  if(!email||!pass){errEl.textContent='Completá todos los campos.';errEl.style.display='block';return;}
-  if(pass.length<6){errEl.textContent='La contraseña debe tener al menos 6 caracteres.';errEl.style.display='block';return;}
-  if(pass!==pass2){errEl.textContent='Las contraseñas no coinciden.';errEl.style.display='block';return;}
-  btn.textContent='Creando...';btn.disabled=true;errEl.style.display='none';
-  try{await createUserWithEmailAndPassword(auth,email,pass);closeAuthModal();}
-  catch(e){const msgs={'auth/email-already-in-use':'Ya existe una cuenta con ese email.','auth/invalid-email':'Email no válido.','auth/weak-password':'La contraseña es muy débil.'};errEl.textContent=msgs[e.code]||e.message;errEl.style.display='block';}
-  finally{btn.textContent='Crear cuenta';btn.disabled=false;}
-}
-async function handleLogout(){try{await signOut(auth);}catch(e){console.error(e);}}
 
 onAuthStateChanged(auth,(user)=>{
   currentUser=user;
-  const authBtn=document.getElementById('authNavBtn');
+  authReady=true;
   if(user){
-    console.log('[Auth] Usuario:',user.uid);
-    if(authBtn){authBtn.textContent='Cerrar sesión';authBtn.onclick=handleLogout;}
+    console.log('[Auth] Usuario anónimo:',user.uid);
     startAlertsListener(user.uid);
   }else{
     console.log('[Auth] Sin usuario');
-    if(authBtn){authBtn.textContent='Ingresar';authBtn.onclick=openAuthModal;}
     stopAlertsListener();
-    showAlertsEmpty('Iniciá sesión para ver tus alertas.');
+    showAlertsEmpty('Iniciando sesión…');
   }
+});
+
+// Intentar signInAnonymously al cargar
+signInAnonymously(auth).catch((err)=>{
+  console.error('[Auth] Error al iniciar sesión anónima:',err.code,err.message);
+  const statusEl=document.getElementById("alertStatus");
+  if(statusEl){statusEl.className="app-status err";statusEl.textContent="Error de autenticación: "+err.message+". Verificá que el login anónimo esté habilitado en Firebase Console.";}
 });
 
 // ===== DESTINATIONS =====
@@ -390,14 +369,15 @@ function setDetectedCity(id,name){
 }
 
 // ===== OFERTAS =====
-function klookHotelLink(cityId,departureDate,returnDate,rooms){
-  const dest=destinations.find(d=>d.id===cityId);
-  if(!dest||!dest.klookCityId)return'';
-  const s=dest.klookSvalue||dest.klookCityId;
-  const t=dest.klookStype||'city';
-  const p=`https://www.klook.com/es/search?keyword=${encodeURIComponent(dest.displayName)}&${t}=${s}`;
-  return`https://tp.media/r?campaign_id=137&marker=761958&p=4110&trs=567185&u=${encodeURIComponent(p)}`;
-}&check_out=${checkOut}&room_num=1&adult_num=${adults}&child_num=0&age=&stype=${city.klookStype||'city'}&svalue=${city.klookSvalue||''}&override=${encodeURIComponent(city.displayName)},${encodeURIComponent(city.displayName)},${encodeURIComponent(city.country||'')}&title=${encodeURIComponent(city.displayName)}&city_id=${city.klookCityId||city.klookSvalue||''}&latlng=`;
+function klookHotelLink(destId,depDate,retDate,pax){
+  const city=destinations.find(d=>d.id===destId);
+  if(!city||!city.klookSvalue){
+    return "https://tp.media/r?campaign_id=137&marker=761958&p=4110&trs=567185&u=https%3A%2F%2Fklook.com";
+  }
+  const checkIn=depDate||new Date(Date.now()+14*86400000).toISOString().slice(0,10);
+  const checkOut=retDate||new Date(new Date(checkIn).getTime()+5*86400000).toISOString().slice(0,10);
+  const adults=pax||1;
+  const searchUrl=`https://www.klook.com/es/hotels/searchresult/?check_in=${checkIn}&check_out=${checkOut}&room_num=1&adult_num=${adults}&child_num=0&age=&stype=${city.klookStype||'city'}&svalue=${city.klookSvalue||''}&override=${encodeURIComponent(city.displayName)},${encodeURIComponent(city.displayName)},${encodeURIComponent(city.country||'')}&title=${encodeURIComponent(city.displayName)}&city_id=${city.klookCityId||city.klookSvalue||''}&latlng=`;
   return `https://tp.media/r?campaign_id=137&marker=761958&p=4110&trs=567185&u=${encodeURIComponent(searchUrl)}`;
 }
 function kkdayLink(){
@@ -687,32 +667,5 @@ window.goToAlerts = function() {
   document.getElementById("buscador").scrollIntoView({behavior:"smooth"});
 };
 </script>
-
-<!-- ===== LOGIN / REGISTER MODAL ===== -->
-<div id="authModal" style="display:none;position:fixed;inset:0;z-index:300;background:rgba(11,61,55,0.7);backdrop-filter:blur(6px);align-items:center;justify-content:center" onclick="if(event.target===this)closeAuthModal()">
-  <div style="background:white;border-radius:24px;padding:32px;max-width:400px;width:92%;box-shadow:0 24px 60px rgba(0,0,0,0.35);position:relative">
-    <button type="button" onclick="closeAuthModal()" style="position:absolute;top:14px;right:14px;background:none;border:none;font-size:22px;cursor:pointer;color:var(--muted);z-index:10">×</button>
-    <div id="authLoginPanel">
-      <h2 style="margin:0 0 6px;color:var(--teal-dark);font-size:22px">Iniciar sesión</h2>
-      <p style="margin:0 0 20px;color:var(--muted);font-size:14px">Accedé a tus alertas de precios desde cualquier dispositivo.</p>
-      <input id="loginEmail" type="email" placeholder="Email" style="width:100%;padding:12px 14px;border:1.5px solid #E0E9E5;border-radius:12px;font-size:15px;margin-bottom:10px;outline:none;box-sizing:border-box">
-      <input id="loginPassword" type="password" placeholder="Contraseña" style="width:100%;padding:12px 14px;border:1.5px solid #E0E9E5;border-radius:12px;font-size:15px;margin-bottom:14px;outline:none;box-sizing:border-box">
-      <button onclick="handleLogin()" id="loginBtn" style="width:100%;padding:12px;border-radius:12px;border:none;background:var(--coral);color:white;font-weight:700;font-size:15px;cursor:pointer">Ingresar</button>
-      <div id="loginError" style="color:#e74c3c;font-size:13px;margin-top:10px;display:none"></div>
-      <p style="text-align:center;margin-top:16px;font-size:14px;color:var(--muted)">¿No tenés cuenta? <a href="#" onclick="event.preventDefault();showRegister();" style="color:var(--coral);font-weight:700;text-decoration:none">Registrate</a></p>
-    </div>
-    <div id="authRegisterPanel" style="display:none">
-      <h2 style="margin:0 0 6px;color:var(--teal-dark);font-size:22px">Crear cuenta</h2>
-      <p style="margin:0 0 20px;color:var(--muted);font-size:14px">Guardá tus alertas y recibí notificaciones en todos tus dispositivos.</p>
-      <input id="regEmail" type="email" placeholder="Email" style="width:100%;padding:12px 14px;border:1.5px solid #E0E9E5;border-radius:12px;font-size:15px;margin-bottom:10px;outline:none;box-sizing:border-box">
-      <input id="regPassword" type="password" placeholder="Contraseña (mín. 6 caracteres)" style="width:100%;padding:12px 14px;border:1.5px solid #E0E9E5;border-radius:12px;font-size:15px;margin-bottom:10px;outline:none;box-sizing:border-box">
-      <input id="regPassword2" type="password" placeholder="Repetir contraseña" style="width:100%;padding:12px 14px;border:1.5px solid #E0E9E5;border-radius:12px;font-size:15px;margin-bottom:14px;outline:none;box-sizing:border-box">
-      <button onclick="handleRegister()" id="regBtn" style="width:100%;padding:12px;border-radius:12px;border:none;background:var(--coral);color:white;font-weight:700;font-size:15px;cursor:pointer">Crear cuenta</button>
-      <div id="regError" style="color:#e74c3c;font-size:13px;margin-top:10px;display:none"></div>
-      <p style="text-align:center;margin-top:16px;font-size:14px;color:var(--muted)">¿Ya tenés cuenta? <a href="#" onclick="event.preventDefault();showLogin();" style="color:var(--coral);font-weight:700;text-decoration:none">Iniciar sesión</a></p>
-    </div>
-  </div>
-</div>
-
 </body>
 </html>

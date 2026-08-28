@@ -112,22 +112,6 @@ nav{position:sticky;top:0;z-index:50;background:rgba(11,61,55,0.92);backdrop-fil
 .result-extras a:hover{text-decoration:underline}
 .alert-card{display:flex;align-items:center;justify-content:space-between;gap:14px;border:1px solid #E7EFEC;border-radius:14px;padding:14px 16px;flex-wrap:wrap}
 .alert-card.inactive{opacity:.6;background:#f9f9f9}
-
-/* ===== NOTIFICACIONES DE ALERTA ENCONTRADA ===== */
-.notification-banner{background:linear-gradient(135deg,#fff5f0 0%,#ffe8e0 100%);border:2px solid var(--coral);border-radius:16px;padding:20px;margin-bottom:16px;position:relative;overflow:hidden;box-shadow:0 8px 24px -8px rgba(255,122,69,.35);animation:notifySlide .5s ease}
-@keyframes notifySlide{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
-.notification-banner .bell{position:absolute;top:14px;right:18px;font-size:28px;color:var(--coral);animation:bellShake 2.5s ease-in-out infinite;transform-origin:top center}
-.notification-banner .notify-title{color:var(--coral);font-weight:800;font-size:15px;margin-bottom:6px;display:flex;align-items:center;gap:8px}
-.notification-banner .notify-route{font-family:'IBM Plex Mono',monospace;font-weight:700;font-size:18px;color:var(--teal-dark);margin-bottom:8px}
-.notification-banner .notify-price-old{font-size:14px;color:#999;text-decoration:line-through;margin-right:8px}
-.notification-banner .notify-price-new{font-family:'IBM Plex Mono',monospace;font-size:24px;font-weight:700;color:var(--coral)}
-.notification-banner .notify-dates{font-size:13px;color:var(--muted);margin-top:4px}
-.notification-banner .notify-actions{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
-.notification-banner .btn-reserve{background:var(--coral);color:white;padding:10px 20px;border-radius:10px;font-weight:700;font-size:14px;text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:transform .15s}
-.notification-banner .btn-reserve:hover{transform:translateY(-2px)}
-.notification-banner .btn-markread{background:transparent;border:1.5px solid #e0c4b8;color:#b08870;padding:10px 16px;border-radius:10px;font-weight:600;font-size:13px;cursor:pointer}
-.notification-banner .btn-markread:hover{border-color:var(--coral);color:var(--coral)}
-.notification-section-title{font-size:12px;font-weight:700;color:var(--coral);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px}
 .alert-delete{background:transparent;border:1.5px solid #F3C6C0;color:#D92D20;border-radius:9px;padding:7px 12px;font-size:12px;font-weight:700;cursor:pointer}
 .alert-toggle{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}
 .alert-toggle input[type="checkbox"]{width:16px;height:16px;accent-color:var(--teal);cursor:pointer}
@@ -168,7 +152,7 @@ footer a{text-decoration:none;color:rgba(246,250,249,0.55)}footer a:hover{color:
 </style>
 </head>
 <body>
-<nav><div class="nav-inner"><a class="brand" href="#top"><svg width="34" height="34" viewBox="0 0 84 84"><rect width="84" height="84" rx="20" fill="#0F9D8D"/><path d="M42 15 L67 64 L55.5 64 L42 37 L28.5 64 L17 64 Z" fill="#F6FAF9"/><circle cx="42" cy="15" r="5.5" fill="#FF7A45"/></svg>alertatrip</a><div class="nav-links"><a href="#board">Qué hace</a><a href="#how">Cómo funciona</a><a href="#destinos">Destinos</a></div><a class="btn btn-coral" href="#buscador" onclick="activateTab('alerta'); return false;">Crear alerta</a><a href="#" id="authNavBtn" onclick="openAuthModal();return false;" style="background:var(--coral);color:white;padding:8px 16px;border-radius:20px;font-size:13px;font-weight:700;text-decoration:none;margin-left:12px">Ingresar</a></div></nav>
+<nav><div class="nav-inner"><a class="brand" href="#top"><svg width="34" height="34" viewBox="0 0 84 84"><rect width="84" height="84" rx="20" fill="#0F9D8D"/><path d="M42 15 L67 64 L55.5 64 L42 37 L28.5 64 L17 64 Z" fill="#F6FAF9"/><circle cx="42" cy="15" r="5.5" fill="#FF7A45"/></svg>alertatrip</a><div class="nav-links"><a href="#board">Qué hace</a><a href="#how">Cómo funciona</a><a href="#destinos">Destinos</a></div><a class="btn btn-coral" href="#buscador" onclick="activateTab('alerta'); return false;">Crear alerta</a></div></nav>
 
 <header class="hero" id="top"><div class="wrap hero-grid"><div><span class="eyebrow"><span class="dot"></span>Cobertura internacional · precios en USD</span><h1>No busques vuelos<br>todo el día. <em>Que te<br>busquen los precios.</em></h1><p class="lede">Elegí de dónde a dónde querés viajar, configurá tu alerta una vez, y te avisamos apenas encontramos un precio mejor — vuelos, hoteles y excursiones, estés donde estés.</p><div class="hero-ctas"><a href="#ofertas" class="btn btn-coral">Ver ofertas destacadas</a><a href="#how" class="btn btn-ghost">Ver cómo funciona</a></div><div class="hero-stats"><div><b>76+</b>ciudades cubiertas</div><div><b>USD</b>precios siempre claros</div><div><b>24/7</b>chequeo automático</div></div></div><div class="pass" id="passCard"><span class="pass-badge">¡Bajó el precio!</span><div class="pass-row"><div><div class="pass-route"><span id="passOrigin">EZE</span><span class="arrow">✈</span><span id="passDest">MAD</span></div><div class="pass-city" id="passCities">Buenos Aires → Madrid</div></div><div class="pass-meta">IDA Y VUELTA<br><span id="passDates">08 OCT — 19 OCT</span></div></div><div class="pass-strip"><svg class="plane" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M1 9.5 4 8l2.5 1L10 6.5l3.5-2c.6-.35 1.5.25 1.2.9l-1.5 2.9-3.3 1.9.9 3.6c.15.6-.6 1.1-1.05.7L7.5 12l-2 1.2-.3-2.1L3 9.9z"/></svg><div class="pass-line"><span class="dot"></span></div></div><div class="pass-price-row"><span class="pass-price-label">Precio por persona</span><span class="pass-price"><span class="old">USD 890</span><span class="new" id="passPrice">USD 553</span></span></div></div></div></div></header>
 
@@ -199,10 +183,7 @@ footer a{text-decoration:none;color:rgba(246,250,249,0.55)}footer a:hover{color:
 
 <div class="app-panel" id="panel-alerta"><form id="alertForm" class="app-form"><div class="field"><label>Desde</label><select id="alertOrigin" required><option value="">Elegí ciudad de origen</option></select></div><div class="field"><label>Hacia</label><select id="alertDest" required><option value="">Elegí destino</option></select></div><div class="field"><label>Precio máximo en USD (opcional)</label><input type="number" id="alertMaxPrice" placeholder="Ej: 600" min="1"></div><div class="field"><label>Pasajeros</label><input type="number" id="alertPassengers" value="1" min="1" max="9"></div><div class="field"><label>Umbral de alerta (%)</label><input type="number" id="alertThreshold" value="15" min="1" max="99" title="Te avisamos cuando el precio baje este porcentaje respecto al actual"></div><div class="field"><label>Fecha de ida (opcional)</label><input type="date" id="alertDeparture"></div><div class="field"><label>Fecha de vuelta (opcional)</label><input type="date" id="alertReturn"></div><button type="submit" class="btn btn-coral" style="width:100%;justify-content:center;margin-top:6px">Guardar alerta</button></form><div id="alertStatus" class="app-status"></div><p class="app-note">Por ahora, el aviso de "bajó el precio" lo mandamos por notificación push solo a través de la app. Mientras tanto, tu alerta ya queda guardada y monitoreada.</p></div>
 
-<div class="app-panel" id="panel-mias">
-  <div id="notificationsList" style="margin-bottom:20px"></div>
-  <div id="misAlertasList" class="results-list"><p class="app-note">Cargando alertas…</p></div>
-</div>
+<div class="app-panel" id="panel-mias"><div id="misAlertasList" class="results-list"><p class="app-note">Cargando alertas…</p></div></div>
 </div></div></section>
 
 <section class="section" id="board"><div class="wrap"><div class="section-head"><span class="kicker">Panel de vuelo</span><h2>Todo lo que vigilamos por vos</h2><p>Como un tablero de salidas de aeropuerto, pero mirando tu bolsillo en vez de las puertas de embarque.</p></div><div class="board"><div class="board-head"><span>Código</span><span>Función</span><span>Alcance</span><span>Estado</span></div><div class="flap-row"><span class="flap-code">ALT</span><span><span class="flap-name">Alertas de precio</span><div class="flap-desc">Elegís ruta y fecha, avisamos cuando baja</div></span><span class="flap-status">Global</span><span class="flap-status live">Activo</span></div><div class="flap-row"><span class="flap-code">RTN</span><span><span class="flap-name">Ida y vuelta completo</span><div class="flap-desc">Un solo link con los dos tramos, sin sorpresas</div></span><span class="flap-status">Global</span><span class="flap-status live">Activo</span></div><div class="flap-row"><span class="flap-code">HTL</span><span><span class="flap-name">Hoteles</span><div class="flap-desc">Buscá alojamiento en el mismo lugar</div></span><span class="flap-status">76+ ciudades</span><span class="flap-status live">Activo</span></div><div class="flap-row"><span class="flap-code">EXC</span><span><span class="flap-name">Excursiones</span><div class="flap-desc">Actividades para armar el viaje completo</div></span><span class="flap-status">76+ ciudades</span><span class="flap-status live">Activo</span></div><div class="flap-row"><span class="flap-code">LOC</span><span><span class="flap-name">Destinos según tu país</span><div class="flap-desc">Lo más buscado cambia si estás en Brasil, Uruguay, o donde sea</div></span><span class="flap-status">Automático</span><span class="flap-status live">Activo</span></div></div></div></section>
@@ -271,49 +252,28 @@ function getCityImage(cityId,airportCode){
   return 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=600&q=80';
 }
 
-// ===== AUTH: EMAIL/PASSWORD =====
+// ===== AUTH: iniciar sesión anónima inmediatamente =====
+let authReady=false;
 let currentUser=null;
-
-function openAuthModal(){document.getElementById('authModal').style.display='flex';showLogin();}
-function closeAuthModal(){document.getElementById('authModal').style.display='none';}
-function showLogin(){document.getElementById('authLoginPanel').style.display='block';document.getElementById('authRegisterPanel').style.display='none';}
-function showRegister(){document.getElementById('authLoginPanel').style.display='none';document.getElementById('authRegisterPanel').style.display='block';}
-
-async function handleLogin(){
-  const btn=document.getElementById('loginBtn');const errEl=document.getElementById('loginError');
-  const email=document.getElementById('loginEmail').value.trim();const pass=document.getElementById('loginPassword').value;
-  if(!email||!pass){errEl.textContent='Completá email y contraseña.';errEl.style.display='block';return;}
-  btn.textContent='Ingresando...';btn.disabled=true;errEl.style.display='none';
-  try{await signInWithEmailAndPassword(auth,email,pass);closeAuthModal();}
-  catch(e){const msgs={'auth/user-not-found':'No existe una cuenta con ese email.','auth/wrong-password':'Contraseña incorrecta.','auth/invalid-credential':'Email o contraseña incorrectos.','auth/invalid-email':'Email no válido.'};errEl.textContent=msgs[e.code]||e.message;errEl.style.display='block';}
-  finally{btn.textContent='Ingresar';btn.disabled=false;}
-}
-async function handleRegister(){
-  const btn=document.getElementById('regBtn');const errEl=document.getElementById('regError');
-  const email=document.getElementById('regEmail').value.trim();const pass=document.getElementById('regPassword').value;const pass2=document.getElementById('regPassword2').value;
-  if(!email||!pass){errEl.textContent='Completá todos los campos.';errEl.style.display='block';return;}
-  if(pass.length<6){errEl.textContent='La contraseña debe tener al menos 6 caracteres.';errEl.style.display='block';return;}
-  if(pass!==pass2){errEl.textContent='Las contraseñas no coinciden.';errEl.style.display='block';return;}
-  btn.textContent='Creando...';btn.disabled=true;errEl.style.display='none';
-  try{await createUserWithEmailAndPassword(auth,email,pass);closeAuthModal();}
-  catch(e){const msgs={'auth/email-already-in-use':'Ya existe una cuenta con ese email.','auth/invalid-email':'Email no válido.','auth/weak-password':'La contraseña es muy débil.'};errEl.textContent=msgs[e.code]||e.message;errEl.style.display='block';}
-  finally{btn.textContent='Crear cuenta';btn.disabled=false;}
-}
-async function handleLogout(){try{await signOut(auth);}catch(e){console.error(e);}}
 
 onAuthStateChanged(auth,(user)=>{
   currentUser=user;
-  const authBtn=document.getElementById('authNavBtn');
+  authReady=true;
   if(user){
-    console.log('[Auth] Usuario:',user.uid);
-    if(authBtn){authBtn.textContent='Cerrar sesión';authBtn.onclick=handleLogout;}
+    console.log('[Auth] Usuario anónimo:',user.uid);
     startAlertsListener(user.uid);
   }else{
     console.log('[Auth] Sin usuario');
-    if(authBtn){authBtn.textContent='Ingresar';authBtn.onclick=openAuthModal;}
     stopAlertsListener();
-    showAlertsEmpty('Iniciá sesión para ver tus alertas.');
+    showAlertsEmpty('Iniciando sesión…');
   }
+});
+
+// Intentar signInAnonymously al cargar
+signInAnonymously(auth).catch((err)=>{
+  console.error('[Auth] Error al iniciar sesión anónima:',err.code,err.message);
+  const statusEl=document.getElementById("alertStatus");
+  if(statusEl){statusEl.className="app-status err";statusEl.textContent="Error de autenticación: "+err.message+". Verificá que el login anónimo esté habilitado en Firebase Console.";}
 });
 
 // ===== DESTINATIONS =====
@@ -390,14 +350,15 @@ function setDetectedCity(id,name){
 }
 
 // ===== OFERTAS =====
-function klookHotelLink(cityId,departureDate,returnDate,rooms){
-  const dest=destinations.find(d=>d.id===cityId);
-  if(!dest||!dest.klookCityId)return'';
-  const s=dest.klookSvalue||dest.klookCityId;
-  const t=dest.klookStype||'city';
-  const p=`https://www.klook.com/es/search?keyword=${encodeURIComponent(dest.displayName)}&${t}=${s}`;
-  return`https://tp.media/r?campaign_id=137&marker=761958&p=4110&trs=567185&u=${encodeURIComponent(p)}`;
-}&check_out=${checkOut}&room_num=1&adult_num=${adults}&child_num=0&age=&stype=${city.klookStype||'city'}&svalue=${city.klookSvalue||''}&override=${encodeURIComponent(city.displayName)},${encodeURIComponent(city.displayName)},${encodeURIComponent(city.country||'')}&title=${encodeURIComponent(city.displayName)}&city_id=${city.klookCityId||city.klookSvalue||''}&latlng=`;
+function klookHotelLink(destId,depDate,retDate,pax){
+  const city=destinations.find(d=>d.id===destId);
+  if(!city||!city.klookSvalue){
+    return "https://tp.media/r?campaign_id=137&marker=761958&p=4110&trs=567185&u=https%3A%2F%2Fklook.com";
+  }
+  const checkIn=depDate||new Date(Date.now()+14*86400000).toISOString().slice(0,10);
+  const checkOut=retDate||new Date(new Date(checkIn).getTime()+5*86400000).toISOString().slice(0,10);
+  const adults=pax||1;
+  const searchUrl=`https://www.klook.com/es/hotels/searchresult/?check_in=${checkIn}&check_out=${checkOut}&room_num=1&adult_num=${adults}&child_num=0&age=&stype=${city.klookStype||'city'}&svalue=${city.klookSvalue||''}&override=${encodeURIComponent(city.displayName)},${encodeURIComponent(city.displayName)},${encodeURIComponent(city.country||'')}&title=${encodeURIComponent(city.displayName)}&city_id=${city.klookCityId||city.klookSvalue||''}&latlng=`;
   return `https://tp.media/r?campaign_id=137&marker=761958&p=4110&trs=567185&u=${encodeURIComponent(searchUrl)}`;
 }
 function kkdayLink(){
@@ -507,8 +468,6 @@ document.getElementById("searchForm").addEventListener("submit",async(e)=>{
 });
 
 // ===== ALERTAS — CON onSnapshot EN TIEMPO REAL =====
-let notificationsUnsubscribe=null;
-
 function showAlertsEmpty(msg){
   const listEl=document.getElementById("misAlertasList");
   const countEl=document.getElementById("misAlertasCount");
@@ -520,7 +479,6 @@ function startAlertsListener(uid){
   stopAlertsListener();
   showAlertsEmpty('Cargando alertas…');
   try{
-    // Listener de alertas
     const q=query(collection(db,"flightAlerts"),where("userId","==",uid));
     alertsUnsubscribe=onSnapshot(q,(snap)=>{
       const countEl=document.getElementById("misAlertasCount");
@@ -533,73 +491,20 @@ function startAlertsListener(uid){
         const priceInfo=a.lastKnownPrice?`Último precio: USD ${a.lastKnownPrice}`:"Todavía no encontramos un precio.";
         const maxInfo=a.maxPrice?` · Tope: USD ${a.maxPrice}`:"";
         const isActive=a.isActive!==false;
-        const checked=isActive?'checked':'';
-        const label=isActive?'Activa':'Pausada';
-        return `<div class="alert-card ${isActive?'':'inactive'}"><div><div class="result-route">${route}</div><div class="result-meta">${priceInfo}${maxInfo}</div></div><div style="display:flex;align-items:center;gap:8px"><label class="alert-toggle"><input type="checkbox" ${checked} onchange="window.toggleAlert('${d.id}',this.checked)"> ${label}</label><button class="alert-delete" onclick="window.deleteAlert('${d.id}')">Borrar</button></div></div>`;
+        return `<div class="alert-card ${isActive?'':'inactive'}"><div><div class="result-route">${route}</div><div class="result-meta">${priceInfo}${maxInfo}</div></div><div style="display:flex;align-items:center;gap:8px"><label class="alert-toggle"><input type="checkbox" ${isActive?'checked':''} onchange="window.toggleAlert('${d.id}',this.checked)"> ${isActive?'Activa':'Pausada'}</label><button class="alert-delete" onclick="window.deleteAlert('${d.id}')">Borrar</button></div></div>`;
       }).join("");
-    },(err)=>{console.error('[Alertas] onSnapshot error:',err);showAlertsEmpty('Error al cargar alertas: '+err.message);});
-
-    // Listener de notificaciones no leídas
-    const nq=query(collection(db,"flightNotifications"),where("userId","==",uid),where("read","==",false));
-    notificationsUnsubscribe=onSnapshot(nq,(snap)=>{
-      const notifEl=document.getElementById("notificationsList");
-      const toastEl=document.getElementById("alertToast");
-
-      // Panel interno: muestra TODAS las notificaciones con detalles
-      if(snap.empty){notifEl.innerHTML='';}
-      else{
-        notifEl.innerHTML='<div class="notification-section-title">🔔 Oportunidades encontradas</div>'+snap.docs.map(d=>{
-          const n=d.data();
-          const oldPrice=n.previousPrice||n.maxPrice||'';
-          const oldPriceHtml=oldPrice?`<span class="notify-price-old">USD ${oldPrice}</span>`:'';
-          const dates=n.departureDate?(n.returnDate?`${n.departureDate.slice(0,10)} → ${n.returnDate.slice(0,10)}`:n.departureDate.slice(0,10)):'Fechas flexibles';
-          // Generar link directo de Aviasales con marker
-          const originCode = n.origin || primaryAirportCode(n.originCityId) || 'EZE';
-          const destCode = n.destination || primaryAirportCode(n.destinationCityId) || 'MAD';
-          const depDate = n.departureDate || '';
-          const retDate = n.returnDate || '';
-          let link = '';
-          if(depDate && retDate){
-            const ddmm = s => { const dt = new Date(s); return `${String(dt.getDate()).padStart(2,'0')}${String(dt.getMonth()+1).padStart(2,'0')}`; };
-            link = `https://www.aviasales.com/search/${originCode.toUpperCase()}${ddmm(depDate)}${destCode.toUpperCase()}${ddmm(retDate)}1?marker=761958&locale=es`;
-          } else if(depDate){
-            const ddmm = s => { const dt = new Date(s); return `${String(dt.getDate()).padStart(2,'0')}${String(dt.getMonth()+1).padStart(2,'0')}`; };
-            link = `https://www.aviasales.com/search/${originCode.toUpperCase()}${ddmm(depDate)}${destCode.toUpperCase()}?marker=761958&locale=es`;
-          } else {
-            link = `https://www.aviasales.com/search/${originCode.toUpperCase()}${destCode.toUpperCase()}1?marker=761958&locale=es`;
-          }
-          return `<div class="notification-banner">
-            <div class="bell">🔔</div>
-            <div class="notify-title">✈️ ¡Alerta encontrada!</div>
-            <div class="notify-route">${n.origin||cityName(n.originCityId)} → ${n.destination||cityName(n.destinationCityId)}</div>
-            <div>${oldPriceHtml}<span class="notify-price-new">USD ${n.price}</span></div>
-            <div class="notify-dates">${dates} · ${n.currency||'USD'}</div>
-            <div class="notify-actions">
-              <a class="btn-reserve" href="${link}" target="_blank" rel="noopener">🛫 Reservar ahora</a>
-              <button class="btn-markread" onclick="window.markNotificationRead('${d.id}')">Marcar como leída</button>
-            </div>
-          </div>`;
-        }).join("");
-      }
-
-      // Toast flotante: SOLO un cartel genérico con campana roja
-      if(snap.empty){toastEl.style.display='none';}
-      else{toastEl.style.display='block';}
-    },(err)=>{console.error('[Notificaciones] onSnapshot error:',err);});
-
+    },(err)=>{
+      console.error('[Alertas] onSnapshot error:',err);
+      showAlertsEmpty('Error al cargar alertas: '+err.message);
+    });
   }catch(err){console.error('[Alertas] Error iniciando listener:',err);showAlertsEmpty('Error al cargar alertas.');}
 }
 
 function stopAlertsListener(){
   if(alertsUnsubscribe){alertsUnsubscribe();alertsUnsubscribe=null;}
-  if(notificationsUnsubscribe){notificationsUnsubscribe();notificationsUnsubscribe=null;}
 }
 
-window.markNotificationRead=async(id)=>{
-  try{await updateDoc(doc(db,"flightNotifications",id),{read:true});}
-  catch(err){console.error('[Notif] Error marcando como leída:',err);}
-};
-
+// Exponer funciones globales para los onclick
 window.toggleAlert=async(id,isActive)=>{
   try{await updateDoc(doc(db,"flightAlerts",id),{isActive});}
   catch(err){console.error('[Alertas] Error toggle:',err);alert('No se pudo cambiar el estado: '+err.message);}
@@ -645,7 +550,7 @@ document.getElementById("alertForm").addEventListener("submit",async(e)=>{
       dateTo:returnRaw?Timestamp.fromDate(new Date(returnRaw+"T00:00:00")):null,
       flexibleDates:!departureRaw,
       isActive:true,
-      createdAt:(new Date()).toISOString(),
+      createdAt:serverTimestamp(),
     });
     statusEl.className="app-status ok";
     statusEl.textContent="¡Listo! Tu alerta ya está guardada y la vamos a monitorear.";
@@ -664,55 +569,5 @@ document.getElementById("alertForm").addEventListener("submit",async(e)=>{
 // Inicializar
 loadDestinations();
 </script>
-<!-- Toast de alertas encontradas -->
-<div id="alertToast" onclick="window.goToAlerts()" style="position:fixed;top:80px;right:20px;z-index:100;max-width:320px;width:calc(100% - 40px);display:none;cursor:pointer">
-  <div style="background:linear-gradient(135deg,#fff5f0 0%,#ffe8e0 100%);border:2px solid var(--coral);border-radius:16px;padding:16px 20px;box-shadow:0 12px 32px -8px rgba(255,122,69,.4);display:flex;align-items:center;gap:14px;animation:toastSlide .4s ease">
-    <span style="font-size:28px;color:var(--coral);animation:bellShake 2.5s ease-in-out infinite;transform-origin:top center;display:inline-block">🔔</span>
-    <div>
-      <div style="font-weight:800;font-size:14px;color:var(--teal-dark);line-height:1.3">Encontramos alertas de precios</div>
-      <div style="font-size:12px;color:var(--muted);margin-top:2px">Click para ver →</div>
-    </div>
-  </div>
-</div>
-
-<style>
-@keyframes bellShake{0%,100%{transform:rotate(0)}20%{transform:rotate(8deg)}40%{transform:rotate(-8deg)}60%{transform:rotate(5deg)}80%{transform:rotate(-5deg)}}
-@keyframes toastSlide{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
-</style>
-
-<script>
-window.goToAlerts = function() {
-  document.getElementById("alertToast").style.display = 'none';
-  activateTab('mias');
-  document.getElementById("buscador").scrollIntoView({behavior:"smooth"});
-};
-</script>
-
-<!-- ===== LOGIN / REGISTER MODAL ===== -->
-<div id="authModal" style="display:none;position:fixed;inset:0;z-index:300;background:rgba(11,61,55,0.7);backdrop-filter:blur(6px);align-items:center;justify-content:center" onclick="if(event.target===this)closeAuthModal()">
-  <div style="background:white;border-radius:24px;padding:32px;max-width:400px;width:92%;box-shadow:0 24px 60px rgba(0,0,0,0.35);position:relative">
-    <button type="button" onclick="closeAuthModal()" style="position:absolute;top:14px;right:14px;background:none;border:none;font-size:22px;cursor:pointer;color:var(--muted);z-index:10">×</button>
-    <div id="authLoginPanel">
-      <h2 style="margin:0 0 6px;color:var(--teal-dark);font-size:22px">Iniciar sesión</h2>
-      <p style="margin:0 0 20px;color:var(--muted);font-size:14px">Accedé a tus alertas de precios desde cualquier dispositivo.</p>
-      <input id="loginEmail" type="email" placeholder="Email" style="width:100%;padding:12px 14px;border:1.5px solid #E0E9E5;border-radius:12px;font-size:15px;margin-bottom:10px;outline:none;box-sizing:border-box">
-      <input id="loginPassword" type="password" placeholder="Contraseña" style="width:100%;padding:12px 14px;border:1.5px solid #E0E9E5;border-radius:12px;font-size:15px;margin-bottom:14px;outline:none;box-sizing:border-box">
-      <button onclick="handleLogin()" id="loginBtn" style="width:100%;padding:12px;border-radius:12px;border:none;background:var(--coral);color:white;font-weight:700;font-size:15px;cursor:pointer">Ingresar</button>
-      <div id="loginError" style="color:#e74c3c;font-size:13px;margin-top:10px;display:none"></div>
-      <p style="text-align:center;margin-top:16px;font-size:14px;color:var(--muted)">¿No tenés cuenta? <a href="#" onclick="event.preventDefault();showRegister();" style="color:var(--coral);font-weight:700;text-decoration:none">Registrate</a></p>
-    </div>
-    <div id="authRegisterPanel" style="display:none">
-      <h2 style="margin:0 0 6px;color:var(--teal-dark);font-size:22px">Crear cuenta</h2>
-      <p style="margin:0 0 20px;color:var(--muted);font-size:14px">Guardá tus alertas y recibí notificaciones en todos tus dispositivos.</p>
-      <input id="regEmail" type="email" placeholder="Email" style="width:100%;padding:12px 14px;border:1.5px solid #E0E9E5;border-radius:12px;font-size:15px;margin-bottom:10px;outline:none;box-sizing:border-box">
-      <input id="regPassword" type="password" placeholder="Contraseña (mín. 6 caracteres)" style="width:100%;padding:12px 14px;border:1.5px solid #E0E9E5;border-radius:12px;font-size:15px;margin-bottom:10px;outline:none;box-sizing:border-box">
-      <input id="regPassword2" type="password" placeholder="Repetir contraseña" style="width:100%;padding:12px 14px;border:1.5px solid #E0E9E5;border-radius:12px;font-size:15px;margin-bottom:14px;outline:none;box-sizing:border-box">
-      <button onclick="handleRegister()" id="regBtn" style="width:100%;padding:12px;border-radius:12px;border:none;background:var(--coral);color:white;font-weight:700;font-size:15px;cursor:pointer">Crear cuenta</button>
-      <div id="regError" style="color:#e74c3c;font-size:13px;margin-top:10px;display:none"></div>
-      <p style="text-align:center;margin-top:16px;font-size:14px;color:var(--muted)">¿Ya tenés cuenta? <a href="#" onclick="event.preventDefault();showLogin();" style="color:var(--coral);font-weight:700;text-decoration:none">Iniciar sesión</a></p>
-    </div>
-  </div>
-</div>
-
 </body>
 </html>
