@@ -25,6 +25,8 @@ nav{position:sticky;top:0;z-index:50;background:rgba(11,61,55,0.92);backdrop-fil
 .btn-coral:hover{transform:translateY(-1px);box-shadow:0 10px 24px -6px rgba(255,122,69,.65)}
 .btn-ghost{background:transparent;color:var(--paper);border:1.5px solid rgba(246,250,249,0.35)}
 .btn-ghost:hover{border-color:rgba(246,250,249,0.7)}
+.btn-gold{background:linear-gradient(135deg,#FFD700,#FFA500);color:#5C3D00;font-weight:800;box-shadow:0 8px 20px -6px rgba(255,165,0,.5)}
+.btn-gold:hover{transform:translateY(-1px);box-shadow:0 10px 24px -6px rgba(255,165,0,.65)}
 @media(max-width:720px){.nav-links{display:none}}
 .hero{background:linear-gradient(160deg,var(--teal-dark) 0%,#0E4A42 60%,#123F38 100%);color:var(--paper);position:relative;overflow:hidden;padding:76px 0 60px}
 .hero::before{content:'';position:absolute;inset:0;opacity:.5;pointer-events:none;background-image:radial-gradient(1px 1px at 20% 30%,rgba(255,255,255,.5) 0,transparent 0),radial-gradient(1px 1px at 70% 60%,rgba(255,255,255,.35) 0,transparent 0),radial-gradient(1.5px 1.5px at 45% 80%,rgba(255,255,255,.3) 0,transparent 0),radial-gradient(1px 1px at 85% 20%,rgba(255,255,255,.4) 0,transparent 0);background-size:600px 600px}
@@ -56,7 +58,6 @@ nav{position:sticky;top:0;z-index:50;background:rgba(11,61,55,0.92);backdrop-fil
 .pass-price .old{font-size:16px;color:#B9C4C0;text-decoration:line-through}
 .pass-price .new{color:var(--teal)}.pass-badge{position:absolute;top:-12px;right:22px;background:var(--coral);color:white;font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px;box-shadow:0 6px 14px -4px rgba(255,122,69,.6)}
 
-/* ===== CARRUSEL DE OFERTAS ===== */
 .offers-section{background:var(--cream);padding:60px 0 40px}
 .offers-header{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:28px}
 .offers-header h2{margin:0 0 6px;color:var(--teal-dark);font-size:clamp(24px,3vw,32px)}
@@ -113,7 +114,6 @@ nav{position:sticky;top:0;z-index:50;background:rgba(11,61,55,0.92);backdrop-fil
 .alert-card{display:flex;align-items:center;justify-content:space-between;gap:14px;border:1px solid #E7EFEC;border-radius:14px;padding:14px 16px;flex-wrap:wrap}
 .alert-card.inactive{opacity:.6;background:#f9f9f9}
 
-/* ===== NOTIFICACIONES DE ALERTA ENCONTRADA ===== */
 .notification-banner{background:linear-gradient(135deg,#fff5f0 0%,#ffe8e0 100%);border:2px solid var(--coral);border-radius:16px;padding:20px;margin-bottom:16px;position:relative;overflow:hidden;box-shadow:0 8px 24px -8px rgba(255,122,69,.35);animation:notifySlide .5s ease}
 @keyframes notifySlide{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
 .notification-banner .bell{position:absolute;top:14px;right:18px;font-size:28px;color:var(--coral);animation:bellShake 2.5s ease-in-out infinite;transform-origin:top center}
@@ -165,8 +165,45 @@ footer{background:var(--teal-dark);color:rgba(246,250,249,0.55);padding:44px 0 2
 .footer-grid{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
 footer a{text-decoration:none;color:rgba(246,250,249,0.55)}footer a:hover{color:var(--paper)}
 .footer-links{display:flex;gap:20px}
+
+/* ===== AUTH MODAL ===== */
+.auth-modal{display:none;position:fixed;inset:0;z-index:300;background:rgba(11,61,55,0.65);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:20px}
+.auth-modal.active{display:flex}
+.auth-box{background:white;border-radius:24px;padding:32px;max-width:420px;width:100%;box-shadow:0 24px 60px rgba(0,0,0,0.25);position:relative}
+.auth-box h2{margin:0 0 6px;color:var(--teal-dark);font-size:22px}
+.auth-box p.sub{margin:0 0 20px;color:var(--muted);font-size:13.5px}
+.auth-field{margin-bottom:14px}
+.auth-field label{display:block;font-size:12px;font-weight:700;color:var(--teal-dark);margin-bottom:5px}
+.auth-field input{width:100%;padding:12px 14px;border-radius:11px;border:1.5px solid #E0E9E5;font-size:14px;font-family:'Inter',sans-serif}
+.auth-field input:focus{outline:none;border-color:var(--teal)}
+.auth-btn{width:100%;padding:12px;border-radius:12px;border:none;background:var(--coral);color:white;font-weight:800;font-size:15px;cursor:pointer;transition:transform .15s}
+.auth-btn:hover{transform:translateY(-1px)}
+.auth-btn:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.auth-link{background:none;border:none;color:var(--teal);font-weight:700;font-size:13px;cursor:pointer;padding:0;margin-top:12px}
+.auth-link:hover{text-decoration:underline}
+.auth-close{position:absolute;top:14px;right:18px;background:none;border:none;font-size:22px;color:var(--muted);cursor:pointer}
+.auth-close:hover{color:var(--teal-dark)}
+.auth-error{color:#D92D20;font-size:13px;margin-top:8px;text-align:center}
+.auth-success{color:var(--teal);font-size:13px;margin-top:8px;text-align:center}
+.auth-divider{display:flex;align-items:center;gap:12px;margin:16px 0;color:var(--muted);font-size:12px}
+.auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:#E0E9E5}
+.user-chip{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.25);border-radius:20px;padding:6px 14px;color:var(--paper);font-size:13px;font-weight:600}
+.user-chip button{background:none;border:none;color:#FFB491;font-size:12px;font-weight:700;cursor:pointer;padding:0}
+.user-chip button:hover{color:white}
+
+/* ===== PREMIUM BANNER ===== */
+.premium-banner{background:linear-gradient(135deg,#FFF9E6 0%,#FFF0CC 100%);border:2px solid #FFD700;border-radius:16px;padding:20px;margin-bottom:20px;text-align:center}
+.premium-banner h3{color:#8B6914;margin:0 0 8px;font-size:18px}
+.premium-banner p{color:#A08030;margin:0 0 14px;font-size:14px}
+.premium-price{font-family:'IBM Plex Mono',monospace;font-size:28px;font-weight:700;color:#B8860B}
+.premium-price span{font-size:14px;color:#A08030;font-weight:600}
+
+/* ===== LOGIN REQUIRED MESSAGE ===== */
+.login-required{text-align:center;padding:40px 20px}
+.login-required .icon{font-size:48px;margin-bottom:16px}
+.login-required h3{color:var(--teal-dark);margin:0 0 8px}
+.login-required p{color:var(--muted);margin:0 0 20px;font-size:14px}
 </style>
-  <!-- PWA -->
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0B3D37">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -176,11 +213,10 @@ footer a{text-decoration:none;color:rgba(246,250,249,0.55)}footer a:hover{color:
   <script>if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js');</script>
 </head>
 <body>
-<nav><div class="nav-inner"><a class="brand" href="#top"><svg width="34" height="34" viewBox="0 0 84 84"><rect width="84" height="84" rx="20" fill="#0F9D8D"/><path d="M42 15 L67 64 L55.5 64 L42 37 L28.5 64 L17 64 Z" fill="#F6FAF9"/><circle cx="42" cy="15" r="5.5" fill="#FF7A45"/></svg>alertatrip</a><div class="nav-links"><a href="#board">Qué hace</a><a href="#how">Cómo funciona</a><a href="#destinos">Destinos</a></div><a class="btn btn-coral" href="#buscador" onclick="activateTab('alerta'); return false;">Crear alerta</a></div></nav>
+<nav><div class="nav-inner"><a class="brand" href="#top"><svg width="34" height="34" viewBox="0 0 84 84"><rect width="84" height="84" rx="20" fill="#0F9D8D"/><path d="M42 15 L67 64 L55.5 64 L42 37 L28.5 64 L17 64 Z" fill="#F6FAF9"/><circle cx="42" cy="15" r="5.5" fill="#FF7A45"/></svg>alertatrip</a><div class="nav-links"><a href="#board">Qué hace</a><a href="#how">Cómo funciona</a><a href="#destinos">Destinos</a></div><div id="authNavContainer" style="display:flex;align-items:center;gap:10px"><a class="btn btn-coral" href="#buscador" onclick="activateTab('alerta'); return false;">Crear alerta</a></div></div></nav>
 
 <header class="hero" id="top"><div class="wrap hero-grid"><div><span class="eyebrow"><span class="dot"></span>Cobertura internacional · precios en USD</span><h1>No busques vuelos<br>todo el día. <em>Que te<br>busquen los precios.</em></h1><p class="lede">Elegí de dónde a dónde querés viajar, configurá tu alerta una vez, y te avisamos apenas encontramos un precio mejor — vuelos, hoteles y excursiones, estés donde estés.</p><div class="hero-ctas"><a href="#ofertas" class="btn btn-coral">Ver ofertas destacadas</a><a href="#how" class="btn btn-ghost">Ver cómo funciona</a></div><div class="hero-stats"><div><b>76+</b>ciudades cubiertas</div><div><b>USD</b>precios siempre claros</div><div><b>24/7</b>chequeo automático</div></div></div><div class="pass" id="passCard"><span class="pass-badge">¡Bajó el precio!</span><div class="pass-row"><div><div class="pass-route"><span id="passOrigin">EZE</span><span class="arrow">✈</span><span id="passDest">MAD</span></div><div class="pass-city" id="passCities">Buenos Aires → Madrid</div></div><div class="pass-meta">IDA Y VUELTA<br><span id="passDates">08 OCT — 19 OCT</span></div></div><div class="pass-strip"><svg class="plane" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M1 9.5 4 8l2.5 1L10 6.5l3.5-2c.6-.35 1.5.25 1.2.9l-1.5 2.9-3.3 1.9.9 3.6c.15.6-.6 1.1-1.05.7L7.5 12l-2 1.2-.3-2.1L3 9.9z"/></svg><div class="pass-line"><span class="dot"></span></div></div><div class="pass-price-row"><span class="pass-price-label">Precio por persona</span><span class="pass-price"><span class="old">USD 890</span><span class="new" id="passPrice">USD 553</span></span></div></div></div></div></header>
 
-<!-- ===== OFERTAS DESTACADAS (CARRUSEL) ===== -->
 <section class="offers-section" id="ofertas"><div class="wrap">
   <div class="offers-header">
     <div>
@@ -205,7 +241,39 @@ footer a{text-decoration:none;color:rgba(246,250,249,0.55)}footer a:hover{color:
 
 <div class="app-panel active" id="panel-buscar"><form id="searchForm" class="app-form"><div class="field"><label>Desde</label><select id="searchOrigin" required><option value="">Elegí ciudad de origen</option></select></div><div class="field"><label>Hacia</label><select id="searchDest" required><option value="">Elegí destino</option></select></div><div class="field field-wide"><label>Tipo de viaje</label><div class="pill-toggle"><button type="button" class="pill active" data-trip="one_way">Solo ida</button><button type="button" class="pill" data-trip="round_trip">Ida y vuelta</button></div></div><div class="field field-wide"><div class="date-toggle"><label><input type="checkbox" id="searchUseDates" checked> Buscar con fechas específicas</label></div></div><div class="field" id="searchDepartureField"><label>Fecha de ida</label><input type="date" id="searchDeparture"></div><div class="field" id="searchReturnField" style="display:none"><label>Fecha de vuelta</label><input type="date" id="searchReturn"></div><button type="submit" class="btn btn-coral" style="width:100%;justify-content:center;margin-top:6px">Buscar precios</button></form><div id="searchStatus" class="app-status"></div><div id="searchResults" class="results-list"></div></div>
 
-<div class="app-panel" id="panel-alerta"><form id="alertForm" class="app-form"><div class="field"><label>Desde</label><select id="alertOrigin" required><option value="">Elegí ciudad de origen</option></select></div><div class="field"><label>Hacia</label><select id="alertDest" required><option value="">Elegí destino</option></select></div><div class="field"><label>Precio máximo en USD (opcional)</label><input type="number" id="alertMaxPrice" placeholder="Ej: 600" min="1"></div><div class="field"><label>Pasajeros</label><input type="number" id="alertPassengers" value="1" min="1" max="9"></div><div class="field"><label>Umbral de alerta (%)</label><input type="number" id="alertThreshold" value="15" min="1" max="99" title="Te avisamos cuando el precio baje este porcentaje respecto al actual"></div><div class="field"><label>Fecha de ida (opcional)</label><input type="date" id="alertDeparture"></div><div class="field"><label>Fecha de vuelta (opcional)</label><input type="date" id="alertReturn"></div><button type="submit" class="btn btn-coral" style="width:100%;justify-content:center;margin-top:6px">Guardar alerta</button></form><div id="alertStatus" class="app-status"></div><p class="app-note">Por ahora, el aviso de "bajó el precio" lo mandamos por notificación push solo a través de la app. Mientras tanto, tu alerta ya queda guardada y monitoreada.</p></div>
+<div class="app-panel" id="panel-alerta">
+  <div id="alertaLoginRequired" style="display:none">
+    <div class="login-required">
+      <div class="icon">🔒</div>
+      <h3>Iniciá sesión para crear alertas</h3>
+      <p>Las alertas de precio están disponibles solo para usuarios registrados. Es gratis y te permite acceder desde cualquier dispositivo.</p>
+      <button class="btn btn-coral" onclick="openAuthModal()">Iniciar sesión gratis</button>
+    </div>
+  </div>
+  <div id="alertaFormContainer">
+    <div id="premiumBanner" class="premium-banner" style="display:none">
+      <h3>🌟 Llegaste al límite de alertas gratuitas</h3>
+      <p>Ya tenés 2 alertas activas. Pasate a Premium para guardar hasta 12 alertas y monitorearlas durante 12 meses.</p>
+      <div class="premium-price">$2 <span>USD / año</span></div>
+      <button class="btn btn-gold" style="margin-top:12px" onclick="openPaymentModal()">Activar Premium</button>
+    </div>
+    <form id="alertForm" class="app-form">
+      <div class="field"><label>Desde</label><select id="alertOrigin" required><option value="">Elegí ciudad de origen</option></select></div>
+      <div class="field"><label>Hacia</label><select id="alertDest" required><option value="">Elegí destino</option></select></div>
+      <div class="field"><label>Pasajeros</label><input type="number" id="alertPassengers" value="1" min="1" max="9"></div>
+      <div class="field"><label>Fecha de ida (opcional)</label><input type="date" id="alertDeparture"></div>
+      <div class="field"><label>Fecha de vuelta (opcional)</label><input type="date" id="alertReturn"></div>
+      <div class="field field-wide">
+        <div style="background:var(--teal-mist);padding:12px 14px;border-radius:12px;font-size:13px;color:var(--muted)">
+          💡 <b>Precio automático:</b> Buscamos el precio actual de tu ruta y te avisamos cuando baje. No necesitás ingresar un monto.
+        </div>
+      </div>
+      <button type="submit" class="btn btn-coral" style="width:100%;justify-content:center;margin-top:6px" id="alertSubmitBtn">Guardar alerta</button>
+    </form>
+    <div id="alertStatus" class="app-status"></div>
+    <p class="app-note" id="alertNote">Podés guardar hasta 2 alertas gratis por 2 meses. Pasate a Premium para 12 alertas por 12 meses.</p>
+  </div>
+</div>
 
 <div class="app-panel" id="panel-mias">
   <div id="notificationsList" style="margin-bottom:20px"></div>
@@ -215,7 +283,7 @@ footer a{text-decoration:none;color:rgba(246,250,249,0.55)}footer a:hover{color:
 
 <section class="section" id="board"><div class="wrap"><div class="section-head"><span class="kicker">Panel de vuelo</span><h2>Todo lo que vigilamos por vos</h2><p>Como un tablero de salidas de aeropuerto, pero mirando tu bolsillo en vez de las puertas de embarque.</p></div><div class="board"><div class="board-head"><span>Código</span><span>Función</span><span>Alcance</span><span>Estado</span></div><div class="flap-row"><span class="flap-code">ALT</span><span><span class="flap-name">Alertas de precio</span><div class="flap-desc">Elegís ruta y fecha, avisamos cuando baja</div></span><span class="flap-status">Global</span><span class="flap-status live">Activo</span></div><div class="flap-row"><span class="flap-code">RTN</span><span><span class="flap-name">Ida y vuelta completo</span><div class="flap-desc">Un solo link con los dos tramos, sin sorpresas</div></span><span class="flap-status">Global</span><span class="flap-status live">Activo</span></div><div class="flap-row"><span class="flap-code">HTL</span><span><span class="flap-name">Hoteles</span><div class="flap-desc">Buscá alojamiento en el mismo lugar</div></span><span class="flap-status">76+ ciudades</span><span class="flap-status live">Activo</span></div><div class="flap-row"><span class="flap-code">EXC</span><span><span class="flap-name">Excursiones</span><div class="flap-desc">Actividades para armar el viaje completo</div></span><span class="flap-status">76+ ciudades</span><span class="flap-status live">Activo</span></div><div class="flap-row"><span class="flap-code">LOC</span><span><span class="flap-name">Destinos según tu país</span><div class="flap-desc">Lo más buscado cambia si estás en Brasil, Uruguay, o donde sea</div></span><span class="flap-status">Automático</span><span class="flap-status live">Activo</span></div></div></div></section>
 
-<section class="section" id="how" style="background:var(--teal-mist)"><div class="wrap"><div class="section-head"><span class="kicker">Cómo funciona</span><h2>Tres pasos, y te olvidás</h2><p>Nada de estar refrescando la página cada media hora. La app hace ese trabajo por vos.</p></div><div class="steps"><div class="step"><div class="num">01</div><h3>Elegí tu ruta</h3><p>Ciudad de origen y destino — no aeropuerto. Buscamos en todos los aeropuertos cercanos por vos.</p></div><div class="step"><div class="num">02</div><h3>Configurá tu alerta</h3><p>Fechas exactas o flexibles, y el precio máximo que estás dispuesto a pagar. Una vez, y listo.</p></div><div class="step"><div class="num">03</div><h3>Te avisamos</h3><p>Notificación push apenas el precio baja lo suficiente. Vos decidís si reservar.</p></div></div></div></section>
+<section class="section" id="how" style="background:var(--teal-mist)"><div class="wrap"><div class="section-head"><span class="kicker">Cómo funciona</span><h2>Tres pasos, y te olvidás</h2><p>Nada de estar refrescando la página cada media hora. La app hace ese trabajo por vos.</p></div><div class="steps"><div class="step"><div class="num">01</div><h3>Elegí tu ruta</h3><p>Ciudad de origen y destino — no aeropuerto. Buscamos en todos los aeropuertos cercanos por vos.</p></div><div class="step"><div class="num">02</div><h3>Configurá tu alerta</h3><p>Fechas exactas o flexibles. El sistema busca el precio actual y te avisa cuando baje.</p></div><div class="step"><div class="num">03</div><h3>Te avisamos</h3><p>Notificación push apenas el precio baja lo suficiente. Vos decidís si reservar.</p></div></div></div></section>
 
 <section class="section" id="destinos"><div class="wrap"><div class="section-head"><span class="kicker">Explorá</span><h2>Destinos, no importa desde dónde partas</h2><p>Da igual si salís desde Buenos Aires, San Pablo o Montevideo — te mostramos lo que más se busca cerca tuyo.</p></div><div class="dest-strip" id="destStrip"></div></div></section>
 
@@ -223,6 +291,85 @@ footer a{text-decoration:none;color:rgba(246,250,249,0.55)}footer a:hover{color:
 
 <footer><div class="wrap footer-grid"><span>© 2026 AlertaTrip. Todos los derechos reservados.</span><div class="footer-links"><a href="/privacidad.html">Privacidad</a><a href="#top">Volver arriba</a></div></div></footer>
 
+<!-- ===== AUTH MODAL ===== -->
+<div id="authModal" class="auth-modal">
+  <div class="auth-box">
+    <button class="auth-close" onclick="closeAuthModal()">&times;</button>
+    <h2 id="authTitle">Iniciar sesión</h2>
+    <p class="sub" id="authSubtitle">Accedé a tus alertas desde cualquier dispositivo.</p>
+    <div id="authError" class="auth-error" style="display:none"></div>
+    <div id="authSuccess" class="auth-success" style="display:none"></div>
+    <form id="authForm" onsubmit="return false;">
+      <div class="auth-field">
+        <label>Email</label>
+        <input type="email" id="authEmail" placeholder="tu@email.com" required>
+      </div>
+      <div class="auth-field" id="authPassField">
+        <label>Contraseña</label>
+        <input type="password" id="authPass" placeholder="••••••" required>
+      </div>
+      <div class="auth-field" id="authPass2Field" style="display:none">
+        <label>Repetir contraseña</label>
+        <input type="password" id="authPass2" placeholder="••••••">
+      </div>
+      <button type="submit" class="auth-btn" id="authSubmitBtn" onclick="handleAuthSubmit()">Ingresar</button>
+    </form>
+    <div style="text-align:center;margin-top:12px">
+      <button class="auth-link" id="authToggleLink" onclick="toggleAuthMode()">¿No tenés cuenta? Registrate</button>
+    </div>
+    <div style="text-align:center;margin-top:8px" id="authForgotContainer">
+      <button class="auth-link" onclick="showForgotPassword()" style="font-size:12px;color:var(--muted)">¿Olvidaste tu contraseña?</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAYMENT MODAL ===== -->
+<div id="paymentModal" class="auth-modal">
+  <div class="auth-box">
+    <button class="auth-close" onclick="closePaymentModal()">&times;</button>
+    <h2 style="color:var(--teal-dark);margin:0 0 6px">Activar Premium</h2>
+    <p style="color:var(--muted);margin:0 0 20px;font-size:14px">Desbloqueá alertas ilimitadas y monitoreo extendido.</p>
+    <div style="background:linear-gradient(135deg,#FFF9E6,#FFF0CC);border:2px solid #FFD700;border-radius:16px;padding:20px;text-align:center;margin-bottom:20px">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:32px;font-weight:700;color:#B8860B">$2 <span style="font-size:16px">USD / año</span></div>
+      <div style="color:#A08030;font-size:13px;margin-top:8px">✓ 12 alertas activas<br>✓ Monitoreo por 12 meses<br>✓ Notificaciones push<br>✓ Acceso desde cualquier dispositivo</div>
+    </div>
+    <div id="paymentError" class="auth-error" style="display:none"></div>
+    <div id="paymentSuccess" class="auth-success" style="display:none"></div>
+    <button class="auth-btn" id="payStripeBtn" onclick="initiateStripePayment()" style="background:#6772E5;margin-bottom:10px">💳 Pagar con tarjeta (Stripe)</button>
+    <button class="auth-btn" id="payPayPalBtn" onclick="initiatePayPalPayment()" style="background:#0070BA;margin-bottom:10px">🅿️ Pagar con PayPal</button>
+    <button class="auth-btn" id="payMPBtn" onclick="initiateMPPayment()" style="background:#00B1EA">💰 Pagar con Mercado Pago</button>
+    <p style="text-align:center;margin-top:14px;font-size:12px;color:var(--muted)">Pago seguro. Se procesa por el proveedor que elijas.</p>
+  </div>
+</div>
+
+<!-- Toast de alertas encontradas -->
+<div id="alertToast" onclick="window.goToAlerts()" style="position:fixed;top:80px;right:20px;z-index:100;max-width:320px;width:calc(100% - 40px);display:none;cursor:pointer">
+  <div style="background:linear-gradient(135deg,#fff5f0 0%,#ffe8e0 100%);border:2px solid var(--coral);border-radius:16px;padding:16px 20px;box-shadow:0 12px 32px -8px rgba(255,122,69,.4);display:flex;align-items:center;gap:14px;animation:toastSlide .4s ease">
+    <span style="font-size:28px;color:var(--coral);animation:bellShake 2.5s ease-in-out infinite;transform-origin:top center;display:inline-block">🔔</span>
+    <div>
+      <div style="font-weight:800;font-size:14px;color:var(--teal-dark);line-height:1.3">Encontramos alertas de precios</div>
+      <div style="font-size:12px;color:var(--muted);margin-top:2px">Click para ver →</div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de redirección -->
+<div id="redirectModal" style="display:none;position:fixed;inset:0;z-index:200;background:rgba(11,61,55,0.6);backdrop-filter:blur(4px);align-items:center;justify-content:center">
+  <div style="background:white;border-radius:20px;padding:28px;max-width:360px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,0.3);text-align:center">
+    <div style="font-size:40px;margin-bottom:12px">✈️</div>
+    <h3 style="margin:0 0 8px;color:var(--teal-dark);font-size:18px">Te llevamos a Aviasales</h3>
+    <p style="margin:0 0 20px;color:var(--muted);font-size:14px;line-height:1.5">Vas a salir de AlertaTrip para ver la oferta en el sitio oficial. El precio final se confirma allí.</p>
+    <div style="display:flex;gap:10px;justify-content:center">
+      <button onclick="closeRedirectModal()" style="padding:10px 18px;border-radius:10px;border:1.5px solid #E0E9E5;background:white;color:var(--muted);font-weight:700;font-size:14px;cursor:pointer">Cancelar</button>
+      <button id="redirectConfirmBtn" onclick="if(redirectTargetUrl)window.open(redirectTargetUrl,'_blank');closeRedirectModal();" style="padding:10px 18px;border-radius:10px;border:none;background:var(--coral);color:white;font-weight:700;font-size:14px;cursor:pointer">Continuar →</button>
+    </div>
+  </div>
+</div>
+
+<style>
+@keyframes bellShake{0%,100%{transform:rotate(0)}20%{transform:rotate(8deg)}40%{transform:rotate(-8deg)}60%{transform:rotate(5deg)}80%{transform:rotate(-5deg)}}
+@keyframes toastSlide{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
+</style>
 <script>
 // Hero rotating routes
 const routes=[{o:'EZE',d:'MAD',cities:'Buenos Aires → Madrid',old:890,price:553,dates:'08 OCT — 19 OCT'},{o:'GRU',d:'LIS',cities:'São Paulo → Lisboa',old:720,price:468,dates:'14 NOV — 24 NOV'},{o:'MVD',d:'MIA',cities:'Montevideo → Miami',old:610,price:399,dates:'02 SEP — 12 SEP'},{o:'BOG',d:'CDG',cities:'Bogotá → París',old:980,price:704,dates:'20 OCT — 03 NOV'},{o:'SCL',d:'NRT',cities:'Santiago → Tokio',old:1450,price:1120,dates:'05 MAY — 20 MAY'}];
@@ -255,12 +402,44 @@ document.querySelectorAll('#panel-buscar .pill').forEach(pill=>{pill.addEventLis
 const dateToggle=document.getElementById('searchUseDates');
 dateToggle.addEventListener('change',()=>{const show=dateToggle.checked;document.getElementById('searchDepartureField').style.display=show?'block':'none';updateReturnField();});
 function updateReturnField(){const isRoundTrip=document.querySelector('#panel-buscar .pill.active').dataset.trip==='round_trip';const useDates=document.getElementById('searchUseDates').checked;document.getElementById('searchReturnField').style.display=(isRoundTrip&&useDates)?'block':'none';}
-</script>
 
+window.goToAlerts = function() {
+  document.getElementById("alertToast").style.display = 'none';
+  activateTab('mias');
+  document.getElementById("buscador").scrollIntoView({behavior:"smooth"});
+};
+
+let redirectTargetUrl = '';
+function openRedirectModal(url, title, icon) {
+  redirectTargetUrl = url;
+  const modal = document.getElementById('redirectModal');
+  const h3 = modal.querySelector('h3');
+  const p = modal.querySelector('p');
+  const iconEl = modal.querySelector('div[style*="font-size:40px"]');
+  if(title) h3.textContent = title;
+  if(icon) iconEl.textContent = icon;
+  modal.style.display = 'flex';
+}
+function closeRedirectModal() {
+  document.getElementById('redirectModal').style.display = 'none';
+  redirectTargetUrl = '';
+}
+document.getElementById('redirectModal').addEventListener('click', (e) => {
+  if(e.target.id === 'redirectModal') closeRedirectModal();
+});
+
+// Payment modal
+window.openPaymentModal = function() {
+  document.getElementById('paymentModal').classList.add('active');
+};
+window.closePaymentModal = function() {
+  document.getElementById('paymentModal').classList.remove('active');
+};
+</script>
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-import{getAuth,signInAnonymously,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
-import{getFirestore,collection,getDocs,addDoc,deleteDoc,doc,query,where,serverTimestamp,Timestamp,onSnapshot,updateDoc}from"https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+import{getAuth,signInAnonymously,onAuthStateChanged,createUserWithEmailAndPassword,signInWithEmailAndPassword,sendEmailVerification,sendPasswordResetEmail,signOut}from"https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+import{getFirestore,collection,getDocs,addDoc,deleteDoc,doc,query,where,serverTimestamp,Timestamp,onSnapshot,updateDoc,getCountFromServer,getDoc,setDoc}from"https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
 const firebaseConfig={apiKey:"AIzaSyC0fG4mn_VxKEd2oZotK6-rPd1x1lN7Q-Q",authDomain:"alerta-vuelos-49ba1.firebaseapp.com",projectId:"alerta-vuelos-49ba1",storageBucket:"alerta-vuelos-49ba1.firebasestorage.app",messagingSenderId:"700792010765",appId:"1:700792010765:web:26993d2778f1118c037d44"};
 const app=initializeApp(firebaseConfig);
@@ -271,37 +450,220 @@ const WORKER_URL="https://api-alertatrip.descuentonadrian.workers.dev";
 let destinations=[];
 let detectedCityId=null;
 let alertsUnsubscribe=null;
-
-// ===== IMÁGENES DESDE FIRESTORE =====
-function getCityImage(cityId,airportCode){
-  if(cityId){const city=destinations.find(d=>d.id===cityId);if(city&&city.imageUrl)return city.imageUrl;}
-  if(airportCode){const city=destinations.find(d=>d.airports&&d.airports.some(a=>a.code===airportCode));if(city&&city.imageUrl)return city.imageUrl;}
-  return 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=600&q=80';
-}
-
-// ===== AUTH: iniciar sesión anónima inmediatamente =====
-let authReady=false;
+let notificationsUnsubscribe=null;
 let currentUser=null;
+let userPlan='free';
+let planExpiresAt=null;
 
+// ===== AUTH STATE =====
 onAuthStateChanged(auth,(user)=>{
   currentUser=user;
-  authReady=true;
-  if(user){
-    console.log('[Auth] Usuario anónimo:',user.uid);
+  updateAuthNav();
+  updateAlertPanel();
+  if(user&&user.email){
+    console.log('[Auth] Usuario logueado:',user.uid,user.email);
+    loadUserPlan(user.uid);
     startAlertsListener(user.uid);
+  }else if(user&&user.isAnonymous){
+    console.log('[Auth] Usuario anónimo:',user.uid);
+    stopAlertsListener();
+    showAlertsEmpty('Iniciá sesión para ver tus alertas.');
   }else{
     console.log('[Auth] Sin usuario');
     stopAlertsListener();
-    showAlertsEmpty('Iniciando sesión…');
+    showAlertsEmpty('Iniciá sesión para ver tus alertas.');
+    signInAnonymously(auth).catch((err)=>{
+      console.error('[Auth] Error anónimo:',err.code,err.message);
+    });
   }
 });
 
-// Intentar signInAnonymously al cargar
-signInAnonymously(auth).catch((err)=>{
-  console.error('[Auth] Error al iniciar sesión anónima:',err.code,err.message);
-  const statusEl=document.getElementById("alertStatus");
-  if(statusEl){statusEl.className="app-status err";statusEl.textContent="Error de autenticación: "+err.message+". Verificá que el login anónimo esté habilitado en Firebase Console.";}
-});
+// ===== AUTH NAV UI =====
+function updateAuthNav(){
+  const container=document.getElementById('authNavContainer');
+  if(!container)return;
+  if(currentUser&&currentUser.email){
+    const verified=currentUser.emailVerified;
+    const badge=verified?'<span style="color:#6FE0D0;font-size:10px">✓</span>':'';
+    const planBadge=userPlan==='premium'?'<span style="background:#FFD700;color:#5C3D00;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:800;margin-left:6px">PREMIUM</span>':'';
+    container.innerHTML=`<div class="user-chip"><span>${currentUser.email}${badge}${planBadge}</span><button onclick="window.logout()">Salir</button></div><a class="btn btn-coral" href="#buscador" onclick="activateTab('alerta'); return false;">Crear alerta</a>`;
+  }else{
+    container.innerHTML=`<button class="btn btn-ghost" onclick="openAuthModal()">Iniciar sesión</button><a class="btn btn-coral" href="#buscador" onclick="activateTab('alerta'); return false;">Crear alerta</a>`;
+  }
+}
+
+// ===== AUTH MODAL =====
+let authMode='login';
+window.openAuthModal=function(){document.getElementById('authModal').classList.add('active');setAuthMode('login');};
+window.closeAuthModal=function(){document.getElementById('authModal').classList.remove('active');clearAuthErrors();};
+window.toggleAuthMode=function(){setAuthMode(authMode==='login'?'register':'login');};
+
+function setAuthMode(mode){
+  authMode=mode;
+  const title=document.getElementById('authTitle');
+  const subtitle=document.getElementById('authSubtitle');
+  const btn=document.getElementById('authSubmitBtn');
+  const toggle=document.getElementById('authToggleLink');
+  const pass2=document.getElementById('authPass2Field');
+  const forgot=document.getElementById('authForgotContainer');
+  const passField=document.getElementById('authPassField');
+  clearAuthErrors();
+  passField.style.display='block';
+  if(mode==='login'){
+    title.textContent='Iniciar sesión';
+    subtitle.textContent='Accedé a tus alertas desde cualquier dispositivo.';
+    btn.textContent='Ingresar';
+    toggle.textContent='¿No tenés cuenta? Registrate';
+    pass2.style.display='none';
+    forgot.style.display='block';
+  }else if(mode==='register'){
+    title.textContent='Crear cuenta';
+    subtitle.textContent='Guardá tus alertas y recibí notificaciones en todos tus dispositivos.';
+    btn.textContent='Crear cuenta';
+    toggle.textContent='¿Ya tenés cuenta? Iniciar sesión';
+    pass2.style.display='block';
+    forgot.style.display='none';
+  }else if(mode==='forgot'){
+    title.textContent='Recuperar contraseña';
+    subtitle.textContent='Te enviamos un email para restablecer tu contraseña.';
+    btn.textContent='Enviar email';
+    toggle.textContent='Volver al inicio de sesión';
+    pass2.style.display='none';
+    passField.style.display='none';
+    forgot.style.display='none';
+  }
+}
+
+window.showForgotPassword=function(){setAuthMode('forgot');};
+
+function clearAuthErrors(){
+  document.getElementById('authError').style.display='none';
+  document.getElementById('authSuccess').style.display='none';
+  document.getElementById('authError').textContent='';
+  document.getElementById('authSuccess').textContent='';
+}
+function showAuthError(msg){const el=document.getElementById('authError');el.textContent=msg;el.style.display='block';document.getElementById('authSuccess').style.display='none';}
+function showAuthSuccess(msg){const el=document.getElementById('authSuccess');el.textContent=msg;el.style.display='block';document.getElementById('authError').style.display='none';}
+
+window.handleAuthSubmit=async function(){
+  const email=document.getElementById('authEmail').value.trim();
+  const pass=document.getElementById('authPass').value;
+  const pass2=document.getElementById('authPass2').value;
+  const btn=document.getElementById('authSubmitBtn');
+  clearAuthErrors();
+  if(!email){showAuthError('Ingresá tu email.');return;}
+  btn.disabled=true;
+  try{
+    if(authMode==='login'){
+      if(!pass){showAuthError('Ingresá tu contraseña.');btn.disabled=false;return;}
+      await signInWithEmailAndPassword(auth,email,pass);
+      closeAuthModal();
+      document.getElementById('authEmail').value='';
+      document.getElementById('authPass').value='';
+    }else if(authMode==='register'){
+      if(!pass){showAuthError('Ingresá una contraseña.');btn.disabled=false;return;}
+      if(pass.length<6){showAuthError('La contraseña debe tener al menos 6 caracteres.');btn.disabled=false;return;}
+      if(pass!==pass2){showAuthError('Las contraseñas no coinciden.');btn.disabled=false;return;}
+      const cred=await createUserWithEmailAndPassword(auth,email,pass);
+      await sendEmailVerification(cred.user);
+      // Crear documento de usuario con plan free
+      await setDoc(doc(db,'users',cred.user.uid),{
+        email:email,
+        plan:'free',
+        planExpiresAt:null,
+        createdAt:serverTimestamp(),
+        alertCount:0
+      });
+      showAuthSuccess('¡Cuenta creada! Te enviamos un email de verificación. Abrí el link para activar tu cuenta.');
+      setTimeout(()=>{setAuthMode('login');clearAuthErrors();},4000);
+    }else if(authMode==='forgot'){
+      await sendPasswordResetEmail(auth,email);
+      showAuthSuccess('Te enviamos un email para restablecer tu contraseña. Revisá tu bandeja de entrada.');
+      setTimeout(()=>{setAuthMode('login');clearAuthErrors();},4000);
+    }
+  }catch(err){
+    const msgs={'auth/user-not-found':'No existe una cuenta con ese email.','auth/wrong-password':'Contraseña incorrecta.','auth/invalid-credential':'Email o contraseña incorrectos.','auth/invalid-email':'Email no válido.','auth/email-already-in-use':'Ya existe una cuenta con ese email.','auth/weak-password':'La contraseña es muy débil.','auth/too-many-requests':'Demasiados intentos. Probá más tarde.'};
+    showAuthError(msgs[err.code]||err.message||'Error desconocido');
+  }finally{
+    btn.disabled=false;
+  }
+};
+
+window.logout=async function(){
+  try{
+    await signOut(auth);
+    userPlan='free';
+    planExpiresAt=null;
+    showAlertsEmpty('Iniciá sesión para ver tus alertas.');
+  }catch(err){console.error('[Auth] Error logout:',err);}
+};
+
+function isLoggedIn(){return currentUser&&currentUser.email;}
+function isEmailVerified(){return currentUser&&currentUser.emailVerified;}
+
+// ===== PLANES =====
+async function loadUserPlan(uid){
+  try{
+    const snap=await getDoc(doc(db,'users',uid));
+    if(snap.exists()){
+      const data=snap.data();
+      userPlan=data.plan||'free';
+      planExpiresAt=data.planExpiresAt?data.planExpiresAt.toDate():null;
+      // Verificar expiración
+      if(userPlan==='premium'&&planExpiresAt&&planExpiresAt<new Date()){
+        userPlan='free';
+        planExpiresAt=null;
+        await updateDoc(doc(db,'users',uid),{plan:'free',planExpiresAt:null});
+      }
+    }else{
+      // Crear documento de usuario si no existe
+      await setDoc(doc(db,'users',uid),{
+        email:currentUser.email,
+        plan:'free',
+        planExpiresAt:null,
+        createdAt:serverTimestamp(),
+        alertCount:0
+      });
+      userPlan='free';
+    }
+    updateAuthNav();
+    updateAlertPanel();
+  }catch(err){console.error('[Plan] Error cargando plan:',err);}
+}
+
+function getPlanLimits(){
+  if(userPlan==='premium'){
+    const valid=planExpiresAt&&planExpiresAt>new Date();
+    if(valid)return{maxAlerts:12,months:12,name:'Premium'};
+  }
+  return{maxAlerts:2,months:2,name:'Gratis'};
+}
+
+function updateAlertPanel(){
+  const loginRequired=document.getElementById('alertaLoginRequired');
+  const formContainer=document.getElementById('alertaFormContainer');
+  const premiumBanner=document.getElementById('premiumBanner');
+  const note=document.getElementById('alertNote');
+  const submitBtn=document.getElementById('alertSubmitBtn');
+
+  if(!isLoggedIn()){
+    loginRequired.style.display='block';
+    formContainer.style.display='none';
+    return;
+  }
+
+  loginRequired.style.display='none';
+  formContainer.style.display='block';
+
+  const limits=getPlanLimits();
+  if(userPlan==='premium'){
+    note.innerHTML='✅ <b>Plan Premium activo</b> — Tenés 12 alertas por 12 meses.';
+    premiumBanner.style.display='none';
+    submitBtn.style.display='block';
+  }else{
+    note.innerHTML='🎁 <b>Plan Gratis</b> — 2 alertas por 2 meses. <button onclick="openPaymentModal()" style="background:none;border:none;color:var(--teal);font-weight:700;cursor:pointer;text-decoration:underline;padding:0">Pasate a Premium por $2 USD/año</button>.';
+  }
+}
 
 // ===== DESTINATIONS =====
 async function loadDestinations(){
@@ -376,7 +738,12 @@ function setDetectedCity(id,name){
   setTimeout(()=>loadOffersAuto(),500);
 }
 
-// ===== OFERTAS =====
+function getCityImage(cityId,airportCode){
+  if(cityId){const city=destinations.find(d=>d.id===cityId);if(city&&city.imageUrl)return city.imageUrl;}
+  if(airportCode){const city=destinations.find(d=>d.airports&&d.airports.some(a=>a.code===airportCode));if(city&&city.imageUrl)return city.imageUrl;}
+  return 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=600&q=80';
+}
+
 function klookHotelLink(destId,depDate,retDate,pax){
   const city=destinations.find(d=>d.id===destId);
   if(!city||!city.klookSvalue){
@@ -447,7 +814,6 @@ document.getElementById("offersOriginPicker").addEventListener("change",async(e)
 });
 
 // ===== BÚSQUEDA DE VUELOS =====
-// ===== BÚSQUEDA DE VUELOS CON FECHAS CERCANAS ±7 DÍAS =====
 function addDays(dateStr, days) {
   const d = new Date(dateStr + 'T00:00:00');
   d.setDate(d.getDate() + days);
@@ -478,11 +844,9 @@ document.getElementById("searchForm").addEventListener("submit", async (e) => {
   if (!originCode || !destCode) { statusEl.className = "app-status err"; statusEl.textContent = "Elegí origen y destino."; return; }
 
   try {
-    // 1) Búsqueda exacta
     let json = await searchFlightsWorker(originCode, destCode, tripType, departure, ret);
     let usedNearby = false;
 
-    // 2) Si no hay resultados y hay fecha, buscar ±7 días
     if ((!json.success || !Array.isArray(json.data) || !json.data.length) && departure) {
       statusEl.innerHTML = '<span class="spinner"></span>No hubo vuelos para esa fecha exacta. Buscando fechas cercanas (±7 días)...';
       const requests = [];
@@ -537,9 +901,7 @@ document.getElementById("searchForm").addEventListener("submit", async (e) => {
   } catch (err) { console.error('[Búsqueda] Error:', err); statusEl.className = "app-status err"; statusEl.textContent = "No pudimos conectar con el buscador."; }
 });
 
-// ===== ALERTAS — CON onSnapshot EN TIEMPO REAL =====
-let notificationsUnsubscribe=null;
-
+// ===== ALERTAS =====
 function showAlertsEmpty(msg){
   const listEl=document.getElementById("misAlertasList");
   const countEl=document.getElementById("misAlertasCount");
@@ -551,7 +913,6 @@ function startAlertsListener(uid){
   stopAlertsListener();
   showAlertsEmpty('Cargando alertas…');
   try{
-    // Listener de alertas
     const q=query(collection(db,"flightAlerts"),where("userId","==",uid));
     alertsUnsubscribe=onSnapshot(q,(snap)=>{
       const countEl=document.getElementById("misAlertasCount");
@@ -568,15 +929,14 @@ function startAlertsListener(uid){
         const label=isActive?'Activa':'Pausada';
         return `<div class="alert-card ${isActive?'':'inactive'}"><div><div class="result-route">${route}</div><div class="result-meta">${priceInfo}${maxInfo}</div></div><div style="display:flex;align-items:center;gap:8px"><label class="alert-toggle"><input type="checkbox" ${checked} onchange="window.toggleAlert('${d.id}',this.checked)"> ${label}</label><button class="alert-delete" onclick="window.deleteAlert('${d.id}')">Borrar</button></div></div>`;
       }).join("");
+      // Actualizar banner premium si es necesario
+      updateAlertPanel();
     },(err)=>{console.error('[Alertas] onSnapshot error:',err);showAlertsEmpty('Error al cargar alertas: '+err.message);});
 
-    // Listener de notificaciones no leídas
     const nq=query(collection(db,"flightNotifications"),where("userId","==",uid),where("read","==",false));
     notificationsUnsubscribe=onSnapshot(nq,(snap)=>{
       const notifEl=document.getElementById("notificationsList");
       const toastEl=document.getElementById("alertToast");
-
-      // Panel interno: muestra TODAS las notificaciones con detalles
       if(snap.empty){notifEl.innerHTML='';}
       else{
         notifEl.innerHTML='<div class="notification-section-title">🔔 Oportunidades encontradas</div>'+snap.docs.map(d=>{
@@ -584,7 +944,6 @@ function startAlertsListener(uid){
           const oldPrice=n.previousPrice||n.maxPrice||'';
           const oldPriceHtml=oldPrice?`<span class="notify-price-old">USD ${oldPrice}</span>`:'';
           const dates=n.departureDate?(n.returnDate?`${n.departureDate.slice(0,10)} → ${n.returnDate.slice(0,10)}`:n.departureDate.slice(0,10)):'Fechas flexibles';
-          // Reconstruir link con datos de la notificación
           const originCode = (n.origin || primaryAirportCode(n.originCityId) || 'EZE').toUpperCase();
           const destCode = (n.destination || primaryAirportCode(n.destinationCityId) || 'MAD').toUpperCase();
           const depDate = n.departureDate || '';
@@ -611,8 +970,6 @@ function startAlertsListener(uid){
           </div>`;
         }).join("");
       }
-
-      // Toast flotante: SOLO un cartel genérico con campana roja
       if(snap.empty){toastEl.style.display='none';}
       else{toastEl.style.display='block';}
     },(err)=>{console.error('[Notificaciones] onSnapshot error:',err);});
@@ -640,16 +997,49 @@ window.deleteAlert=async(id)=>{
   catch(err){console.error('[Alertas] Error delete:',err);alert('No se pudo borrar: '+err.message);}
 };
 
+// Precio automático: buscar precio actual de la ruta
+async function getCurrentPrice(originCityId, destCityId, departure, ret) {
+  const originCode = primaryAirportCode(originCityId);
+  const destCode = primaryAirportCode(destCityId);
+  if (!originCode || !destCode) return null;
+  try {
+    const tripType = ret ? 'round_trip' : 'one_way';
+    const params = new URLSearchParams({ origin: originCode, destination: destCode, currency: "usd", trip_type: tripType });
+    if (departure) params.set("departure_at", departure);
+    if (ret) params.set("return_at", ret);
+    const res = await fetch(`${WORKER_URL}/search-flights?${params.toString()}`);
+    const json = await res.json();
+    if (json.success && Array.isArray(json.data) && json.data.length) {
+      // Ordenar por precio y tomar el más barato
+      const sorted = json.data.sort((a, b) => a.price - b.price);
+      return sorted[0].price;
+    }
+    return null;
+  } catch (err) {
+    console.error('[Precio] Error buscando precio actual:', err);
+    return null;
+  }
+}
+
 // Crear alerta
+async function countUserAlerts(uid){
+  try{
+    const q=query(collection(db,"flightAlerts"),where("userId","==",uid));
+    const snap=await getCountFromServer(q);
+    return snap.data().count;
+  }catch(err){console.error('[Alertas] Error contando:',err);return 99;}
+}
+
 document.getElementById("alertForm").addEventListener("submit",async(e)=>{
   e.preventDefault();
   const statusEl=document.getElementById("alertStatus");
   statusEl.className="app-status";
   statusEl.innerHTML='<span class="spinner"></span>Guardando tu alerta…';
 
-  if(!currentUser){
+  if(!isLoggedIn()){
     statusEl.className="app-status err";
-    statusEl.textContent="Esperando autenticación… Probá de nuevo en unos segundos.";
+    statusEl.textContent="Tenés que iniciar sesión para crear alertas.";
+    openAuthModal();
     return;
   }
 
@@ -658,28 +1048,54 @@ document.getElementById("alertForm").addEventListener("submit",async(e)=>{
   if(!originCityId||!destinationCityId){statusEl.className="app-status err";statusEl.textContent="Elegí origen y destino.";return;}
   if(originCityId===destinationCityId){statusEl.className="app-status err";statusEl.textContent="El origen y destino no pueden ser iguales.";return;}
 
-  const maxPriceRaw=document.getElementById("alertMaxPrice").value;
   const passengersRaw=document.getElementById("alertPassengers").value;
-  const thresholdRaw=document.getElementById("alertThreshold").value;
   const departureRaw=document.getElementById("alertDeparture").value;
   const returnRaw=document.getElementById("alertReturn").value;
+
+  // Verificar límite de alertas según plan
+  const currentCount=await countUserAlerts(currentUser.uid);
+  const limits=getPlanLimits();
+  if(currentCount>=limits.maxAlerts){
+    statusEl.className="app-status err";
+    statusEl.innerHTML=`Llegaste al límite de ${limits.maxAlerts} alertas. <button onclick="openPaymentModal()" style="background:none;border:none;color:var(--teal);font-weight:700;cursor:pointer;text-decoration:underline;padding:0">Pasate a Premium</button> para más.`;
+    document.getElementById('premiumBanner').style.display='block';
+    document.getElementById('alertSubmitBtn').style.display='none';
+    return;
+  }
+
+  // Buscar precio actual automáticamente
+  statusEl.innerHTML='<span class="spinner"></span>Buscando el precio actual de tu ruta…';
+  const currentPrice = await getCurrentPrice(originCityId, destinationCityId, departureRaw, returnRaw);
+
+  // Calcular precio máximo: hasta 50% menos que el precio actual
+  let maxPrice = null;
+  if (currentPrice) {
+    maxPrice = Math.round(currentPrice * 0.5);
+    statusEl.innerHTML='<span class="spinner"></span>Precio actual: USD '+currentPrice+'. Guardando alerta…';
+  }
 
   try{
     await addDoc(collection(db,"flightAlerts"),{
       userId:currentUser.uid,
       originCityId,destinationCityId,
-      maxPrice:maxPriceRaw?Number(maxPriceRaw):null,
+      maxPrice:maxPrice,
       passengers:passengersRaw?Number(passengersRaw):1,
-      alertThresholdPercent:thresholdRaw?Number(thresholdRaw):15,
+      alertThresholdPercent:15,
       dateFrom:departureRaw?Timestamp.fromDate(new Date(departureRaw+"T00:00:00")):null,
       dateTo:returnRaw?Timestamp.fromDate(new Date(returnRaw+"T00:00:00")):null,
       flexibleDates:!departureRaw,
       isActive:true,
-      createdAt:(new Date()).toISOString(),
+      lastKnownPrice:currentPrice,
+      createdAt:serverTimestamp(),
     });
     statusEl.className="app-status ok";
-    statusEl.textContent="¡Listo! Tu alerta ya está guardada y la vamos a monitorear.";
+    if(currentPrice){
+      statusEl.innerHTML=`¡Listo! Tu alerta está guardada. Precio actual: <b>USD ${currentPrice}</b>. Te avisamos cuando baje de <b>USD ${maxPrice}</b>.`;
+    }else{
+      statusEl.textContent="¡Listo! Tu alerta ya está guardada y la vamos a monitorear.";
+    }
     document.getElementById("alertForm").reset();
+    updateAlertPanel();
   }catch(err){
     console.error('[Alertas] Error guardando:',err);
     statusEl.className="app-status err";
@@ -691,67 +1107,88 @@ document.getElementById("alertForm").addEventListener("submit",async(e)=>{
   }
 });
 
+// ===== PAGOS =====
+window.initiateStripePayment = function() {
+  // Placeholder: reemplazar con tu URL de Stripe Checkout
+  const paymentError = document.getElementById('paymentError');
+  const paymentSuccess = document.getElementById('paymentSuccess');
+  paymentError.style.display = 'none';
+  paymentSuccess.style.display = 'none';
+
+  // Aquí iría la integración real con Stripe
+  // Ejemplo: redirect a Stripe Checkout Session
+  // window.location.href = 'https://checkout.stripe.com/pay/cs_test_...';
+
+  paymentSuccess.textContent = 'Redirigiendo a Stripe para el pago seguro…';
+  paymentSuccess.style.display = 'block';
+
+  // Para demo, simular éxito después de 2 segundos
+  setTimeout(() => {
+    activatePremium();
+  }, 2000);
+};
+
+window.initiatePayPalPayment = function() {
+  const paymentError = document.getElementById('paymentError');
+  const paymentSuccess = document.getElementById('paymentSuccess');
+  paymentError.style.display = 'none';
+  paymentSuccess.style.display = 'none';
+
+  // Placeholder: reemplazar con tu integración de PayPal
+  // Ejemplo: crear orden en tu backend y redirigir
+
+  paymentSuccess.textContent = 'Redirigiendo a PayPal…';
+  paymentSuccess.style.display = 'block';
+
+  setTimeout(() => {
+    activatePremium();
+  }, 2000);
+};
+
+window.initiateMPPayment = function() {
+  const paymentError = document.getElementById('paymentError');
+  const paymentSuccess = document.getElementById('paymentSuccess');
+  paymentError.style.display = 'none';
+  paymentSuccess.style.display = 'none';
+
+  // Placeholder: reemplazar con tu integración de Mercado Pago
+  // Mercado Pago permite pagos internacionales con tarjetas Visa/Mastercard
+  // desde varios países, pero tiene mejor cobertura en LATAM.
+
+  paymentSuccess.textContent = 'Redirigiendo a Mercado Pago…';
+  paymentSuccess.style.display = 'block';
+
+  setTimeout(() => {
+    activatePremium();
+  }, 2000);
+};
+
+async function activatePremium() {
+  if (!currentUser) return;
+  try {
+    const expiresAt = new Date();
+    expiresAt.setFullYear(expiresAt.getFullYear() + 1);
+    await updateDoc(doc(db, 'users', currentUser.uid), {
+      plan: 'premium',
+      planExpiresAt: Timestamp.fromDate(expiresAt),
+      upgradedAt: serverTimestamp()
+    });
+    userPlan = 'premium';
+    planExpiresAt = expiresAt;
+    updateAuthNav();
+    updateAlertPanel();
+    closePaymentModal();
+    alert('¡Premium activado! Ahora tenés 12 alertas por 12 meses.');
+  } catch (err) {
+    console.error('[Premium] Error activando:', err);
+    const paymentError = document.getElementById('paymentError');
+    paymentError.textContent = 'Error al activar Premium: ' + err.message;
+    paymentError.style.display = 'block';
+  }
+}
+
 // Inicializar
 loadDestinations();
 </script>
-<!-- Toast de alertas encontradas -->
-<div id="alertToast" onclick="window.goToAlerts()" style="position:fixed;top:80px;right:20px;z-index:100;max-width:320px;width:calc(100% - 40px);display:none;cursor:pointer">
-  <div style="background:linear-gradient(135deg,#fff5f0 0%,#ffe8e0 100%);border:2px solid var(--coral);border-radius:16px;padding:16px 20px;box-shadow:0 12px 32px -8px rgba(255,122,69,.4);display:flex;align-items:center;gap:14px;animation:toastSlide .4s ease">
-    <span style="font-size:28px;color:var(--coral);animation:bellShake 2.5s ease-in-out infinite;transform-origin:top center;display:inline-block">🔔</span>
-    <div>
-      <div style="font-weight:800;font-size:14px;color:var(--teal-dark);line-height:1.3">Encontramos alertas de precios</div>
-      <div style="font-size:12px;color:var(--muted);margin-top:2px">Click para ver →</div>
-    </div>
-  </div>
-</div>
-
-<style>
-@keyframes bellShake{0%,100%{transform:rotate(0)}20%{transform:rotate(8deg)}40%{transform:rotate(-8deg)}60%{transform:rotate(5deg)}80%{transform:rotate(-5deg)}}
-@keyframes toastSlide{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
-</style>
-
-<script>
-window.goToAlerts = function() {
-  document.getElementById("alertToast").style.display = 'none';
-  activateTab('mias');
-  document.getElementById("buscador").scrollIntoView({behavior:"smooth"});
-};
-
-
-// ===== MODAL DE REDIRECCIÓN =====
-let redirectTargetUrl = '';
-function openRedirectModal(url, title, icon) {
-  redirectTargetUrl = url;
-  const modal = document.getElementById('redirectModal');
-  const h3 = modal.querySelector('h3');
-  const p = modal.querySelector('p');
-  const iconEl = modal.querySelector('div[style*="font-size:40px"]');
-  if(title) h3.textContent = title;
-  if(icon) iconEl.textContent = icon;
-  modal.style.display = 'flex';
-}
-function closeRedirectModal() {
-  document.getElementById('redirectModal').style.display = 'none';
-  redirectTargetUrl = '';
-}
-document.getElementById('redirectModal').addEventListener('click', (e) => {
-  if(e.target.id === 'redirectModal') closeRedirectModal();
-});
-
-</script>
-
-<!-- Modal de redirección -->
-<div id="redirectModal" style="display:none;position:fixed;inset:0;z-index:200;background:rgba(11,61,55,0.6);backdrop-filter:blur(4px);align-items:center;justify-content:center">
-  <div style="background:white;border-radius:20px;padding:28px;max-width:360px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,0.3);text-align:center">
-    <div style="font-size:40px;margin-bottom:12px">✈️</div>
-    <h3 style="margin:0 0 8px;color:var(--teal-dark);font-size:18px">Te llevamos a Aviasales</h3>
-    <p style="margin:0 0 20px;color:var(--muted);font-size:14px;line-height:1.5">Vas a salir de AlertaTrip para ver la oferta en el sitio oficial. El precio final se confirma allí.</p>
-    <div style="display:flex;gap:10px;justify-content:center">
-      <button onclick="closeRedirectModal()" style="padding:10px 18px;border-radius:10px;border:1.5px solid #E0E9E5;background:white;color:var(--muted);font-weight:700;font-size:14px;cursor:pointer">Cancelar</button>
-      <button id="redirectConfirmBtn" onclick="if(redirectTargetUrl)window.open(redirectTargetUrl,'_blank');closeRedirectModal();" style="padding:10px 18px;border-radius:10px;border:none;background:var(--coral);color:white;font-weight:700;font-size:14px;cursor:pointer">Continuar →</button>
-    </div>
-  </div>
-</div>
-
 </body>
 </html>
