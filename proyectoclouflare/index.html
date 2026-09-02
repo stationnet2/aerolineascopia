@@ -264,8 +264,27 @@ footer a{text-decoration:none;color:rgba(246,250,249,0.55)}footer a:hover{color:
       <div class="field"><label>Fecha de ida (opcional)</label><input type="date" id="alertDeparture"></div>
       <div class="field"><label>Fecha de vuelta (opcional)</label><input type="date" id="alertReturn"></div>
       <div class="field field-wide">
+        <label for="alertDiscount">¿Qué descuento querés esperar?</label>
+        <select id="alertDiscount" required>
+          <option value="0">0% de descuento</option>
+          <option value="5">5% de descuento</option>
+          <option value="10" selected>10% de descuento (recomendado)</option>
+          <option value="15">15% de descuento</option>
+          <option value="20">20% de descuento</option>
+          <option value="25">25% de descuento</option>
+          <option value="30">30% de descuento</option>
+          <option value="35">35% de descuento</option>
+          <option value="40">40% de descuento</option>
+          <option value="45">45% de descuento</option>
+          <option value="50">50% de descuento</option>
+        </select>
+        <div style="font-size:12px;color:var(--muted);margin-top:2px">
+          Elegí cuánto querés que baje el precio respecto del precio actual. El valor recomendado es 10%.
+        </div>
+      </div>
+      <div class="field field-wide">
         <div style="background:var(--teal-mist);padding:12px 14px;border-radius:12px;font-size:13px;color:var(--muted)">
-          💡 <b>Precio automático:</b> Buscamos el precio actual de tu ruta y te avisamos cuando baje. No necesitás ingresar un monto.
+          💡 <b>Precio automático:</b> Buscamos el precio actual de tu ruta y te avisamos cuando alcance el descuento que elegiste.
         </div>
       </div>
       <button type="submit" class="btn btn-coral" style="width:100%;justify-content:center;margin-top:6px" id="alertSubmitBtn">Guardar alerta</button>
@@ -1067,10 +1086,18 @@ document.getElementById("alertForm").addEventListener("submit",async(e)=>{
   statusEl.innerHTML='<span class="spinner"></span>Buscando el precio actual de tu ruta…';
   const currentPrice = await getCurrentPrice(originCityId, destinationCityId, departureRaw, returnRaw);
 
-  // Calcular precio máximo: hasta 50% menos que el precio actual
+  // Calcular precio máximo según el descuento elegido (0% a 50%, 10% por defecto)
+  const discountRaw = document.getElementById("alertDiscount").value;
+  const discountPercent = Number(discountRaw);
+  if(!Number.isFinite(discountPercent) || discountPercent < 0 || discountPercent > 50){
+    statusEl.className="app-status err";
+    statusEl.textContent="Elegí un descuento válido entre 0% y 50%.";
+    return;
+  }
+
   let maxPrice = null;
   if (currentPrice) {
-    maxPrice = Math.round(currentPrice * 0.5);
+    maxPrice = Math.round(currentPrice * (1 - discountPercent / 100));
     statusEl.innerHTML='<span class="spinner"></span>Precio actual: USD '+currentPrice+'. Guardando alerta…';
   }
 
