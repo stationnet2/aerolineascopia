@@ -253,8 +253,8 @@ footer a{text-decoration:none;color:rgba(246,250,249,0.55)}footer a:hover{color:
   <div id="alertaFormContainer">
     <div id="premiumBanner" class="premium-banner" style="display:none">
       <h3>🌟 Llegaste al límite de alertas gratuitas</h3>
-      <p>Ya tenés 2 alertas activas. Pasate a Premium para guardar hasta 12 alertas y monitorearlas durante 12 meses.</p>
-      <div class="premium-price">$2 <span>USD / año</span></div>
+      <p id="premiumBannerText">Ya tenés 2 alertas activas. Pasate a Premium para guardar hasta 12 alertas y monitorearlas durante 12 meses.</p>
+      <div class="premium-price" id="premiumBannerPrice">$2 <span>USD / año</span></div>
       <button class="btn btn-gold" style="margin-top:12px" onclick="openPaymentModal()">Activar Premium</button>
     </div>
     <form id="alertForm" class="app-form">
@@ -263,6 +263,7 @@ footer a{text-decoration:none;color:rgba(246,250,249,0.55)}footer a:hover{color:
       <div class="field"><label>Pasajeros</label><input type="number" id="alertPassengers" value="1" min="1" max="9"></div>
       <div class="field"><label>Fecha de ida (opcional)</label><input type="date" id="alertDeparture"></div>
       <div class="field"><label>Fecha de vuelta (opcional)</label><input type="date" id="alertReturn"></div>
+      
       <div class="field field-wide">
         <label for="alertDiscount">¿Qué descuento querés esperar?</label>
         <select id="alertDiscount" required>
@@ -279,9 +280,25 @@ footer a{text-decoration:none;color:rgba(246,250,249,0.55)}footer a:hover{color:
           <option value="50">50% de descuento</option>
         </select>
         <div style="font-size:12px;color:var(--muted);margin-top:2px">
-          Elegí cuánto querés que baje el precio respecto del precio actual. El valor recomendado es 10%.
+          Elegí cuánto querés que baje el precio respecto del precio actual.
         </div>
       </div>
+
+      <!-- NUEVO: Selector de Umbral de Notificación -->
+      <div class="field field-wide">
+        <label for="alertThreshold">Umbral de notificación</label>
+        <select id="alertThreshold" required>
+          <option value="5">5% (muy sensible)</option>
+          <option value="10">10%</option>
+          <option value="15" selected>15% (recomendado)</option>
+          <option value="20">20%</option>
+          <option value="30">30% (solo grandes bajadas)</option>
+        </select>
+        <div style="font-size:12px;color:var(--muted);margin-top:2px">
+          Te avisaremos cuando el precio baje este porcentaje respecto al último precio registrado.
+        </div>
+      </div>
+
       <div class="field field-wide">
         <div style="background:var(--teal-mist);padding:12px 14px;border-radius:12px;font-size:13px;color:var(--muted)">
           💡 <b>Precio automático:</b> Buscamos el precio actual de tu ruta y te avisamos cuando alcance el descuento que elegiste.
@@ -349,8 +366,8 @@ footer a{text-decoration:none;color:rgba(246,250,249,0.55)}footer a:hover{color:
     <h2 style="color:var(--teal-dark);margin:0 0 6px">Activar Premium</h2>
     <p style="color:var(--muted);margin:0 0 20px;font-size:14px">Desbloqueá alertas ilimitadas y monitoreo extendido.</p>
     <div style="background:linear-gradient(135deg,#FFF9E6,#FFF0CC);border:2px solid #FFD700;border-radius:16px;padding:20px;text-align:center;margin-bottom:20px">
-      <div style="font-family:'IBM Plex Mono',monospace;font-size:32px;font-weight:700;color:#B8860B">$2 <span style="font-size:16px">USD / año</span></div>
-      <div style="color:#A08030;font-size:13px;margin-top:8px">✓ 12 alertas activas<br>✓ Monitoreo por 12 meses<br>✓ Notificaciones push<br>✓ Acceso desde cualquier dispositivo</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:32px;font-weight:700;color:#B8860B" id="paymentModalPrice">$2 <span style="font-size:16px">USD / año</span></div>
+      <div style="color:#A08030;font-size:13px;margin-top:8px" id="paymentModalFeatures">✓ 12 alertas activas<br>✓ Monitoreo por 12 meses<br>✓ Notificaciones push<br>✓ Acceso desde cualquier dispositivo</div>
     </div>
     <div id="paymentError" class="auth-error" style="display:none"></div>
     <div id="paymentSuccess" class="auth-success" style="display:none"></div>
@@ -474,6 +491,51 @@ let currentUser=null;
 let userPlan='free';
 let planExpiresAt=null;
 
+// ===== CONFIGURACIÓN GLOBAL (appConfig) =====
+let appConfig = {
+  defaultAlertThresholdPercent: 15,
+  freePlan: { maxAlerts: 2, months: 2, name: 'Gratis' },
+  premiumPlan: { maxAlerts: 12, months: 12, priceUSD: 2, name: 'Premium' },
+  autoMaxPriceFactor: 0.5,
+  minMaxPriceUSD: 20
+};
+
+async function loadAppConfig() {
+  try {
+    const docRef = doc(db, 'appConfig', 'system');
+    const snap = await getDoc(docRef);
+    if (snap.exists()) {
+      const data = snap.data();
+      appConfig = {
+        ...appConfig,
+        ...data,
+        freePlan: { ...appConfig.freePlan, ...(data.freePlan || {}) },
+        premiumPlan: { ...appConfig.premiumPlan, ...(data.premiumPlan || {}) }
+      };
+      updateAlertPanel();
+      updatePaymentModal();
+      
+      const thresholdSelect = document.getElementById('alertThreshold');
+      if (thresholdSelect) {
+        thresholdSelect.value = appConfig.defaultAlertThresholdPercent || 15;
+      }
+    }
+  } catch (err) {
+    console.error('[Config] Error cargando appConfig:', err);
+  }
+}
+
+function updatePaymentModal() {
+  const priceEl = document.getElementById('paymentModalPrice');
+  const featuresEl = document.getElementById('paymentModalFeatures');
+  if (priceEl) {
+    priceEl.innerHTML = `$${appConfig.premiumPlan.priceUSD || 2} <span style="font-size:16px">USD / año</span>`;
+  }
+  if (featuresEl) {
+    featuresEl.innerHTML = `✓ ${appConfig.premiumPlan.maxAlerts || 12} alertas activas<br>✓ Monitoreo por ${appConfig.premiumPlan.months || 12} meses<br>✓ Notificaciones push<br>✓ Acceso desde cualquier dispositivo`;
+  }
+}
+
 // ===== AUTH STATE =====
 onAuthStateChanged(auth,(user)=>{
   currentUser=user;
@@ -585,7 +647,6 @@ window.handleAuthSubmit=async function(){
       if(pass!==pass2){showAuthError('Las contraseñas no coinciden.');btn.disabled=false;return;}
       const cred=await createUserWithEmailAndPassword(auth,email,pass);
       await sendEmailVerification(cred.user);
-      // Crear documento de usuario con plan free
       await setDoc(doc(db,'users',cred.user.uid),{
         email:email,
         plan:'free',
@@ -618,7 +679,6 @@ window.logout=async function(){
 };
 
 function isLoggedIn(){return currentUser&&currentUser.email;}
-function isEmailVerified(){return currentUser&&currentUser.emailVerified;}
 
 // ===== PLANES =====
 async function loadUserPlan(uid){
@@ -628,14 +688,12 @@ async function loadUserPlan(uid){
       const data=snap.data();
       userPlan=data.plan||'free';
       planExpiresAt=data.planExpiresAt?data.planExpiresAt.toDate():null;
-      // Verificar expiración
       if(userPlan==='premium'&&planExpiresAt&&planExpiresAt<new Date()){
         userPlan='free';
         planExpiresAt=null;
         await updateDoc(doc(db,'users',uid),{plan:'free',planExpiresAt:null});
       }
     }else{
-      // Crear documento de usuario si no existe
       await setDoc(doc(db,'users',uid),{
         email:currentUser.email,
         plan:'free',
@@ -653,9 +711,9 @@ async function loadUserPlan(uid){
 function getPlanLimits(){
   if(userPlan==='premium'){
     const valid=planExpiresAt&&planExpiresAt>new Date();
-    if(valid)return{maxAlerts:12,months:12,name:'Premium'};
+    if(valid) return appConfig.premiumPlan;
   }
-  return{maxAlerts:2,months:2,name:'Gratis'};
+  return appConfig.freePlan;
 }
 
 function updateAlertPanel(){
@@ -676,11 +734,11 @@ function updateAlertPanel(){
 
   const limits=getPlanLimits();
   if(userPlan==='premium'){
-    note.innerHTML='✅ <b>Plan Premium activo</b> — Tenés 12 alertas por 12 meses.';
+    note.innerHTML=`✅ <b>Plan ${limits.name} activo</b> — Tenés ${limits.maxAlerts} alertas por ${limits.months} meses.`;
     premiumBanner.style.display='none';
     submitBtn.style.display='block';
   }else{
-    note.innerHTML='🎁 <b>Plan Gratis</b> — 2 alertas por 2 meses. <button onclick="openPaymentModal()" style="background:none;border:none;color:var(--teal);font-weight:700;cursor:pointer;text-decoration:underline;padding:0">Pasate a Premium por $2 USD/año</button>.';
+    note.innerHTML=`🎁 <b>Plan ${limits.name}</b> — ${limits.maxAlerts} alertas por ${limits.months} meses. <button onclick="openPaymentModal()" style="background:none;border:none;color:var(--teal);font-weight:700;cursor:pointer;text-decoration:underline;padding:0">Pasate a Premium por $${limits.priceUSD || 2} USD/año</button>.`;
   }
 }
 
@@ -948,7 +1006,6 @@ function startAlertsListener(uid){
         const label=isActive?'Activa':'Pausada';
         return `<div class="alert-card ${isActive?'':'inactive'}"><div><div class="result-route">${route}</div><div class="result-meta">${priceInfo}${maxInfo}</div></div><div style="display:flex;align-items:center;gap:8px"><label class="alert-toggle"><input type="checkbox" ${checked} onchange="window.toggleAlert('${d.id}',this.checked)"> ${label}</label><button class="alert-delete" onclick="window.deleteAlert('${d.id}')">Borrar</button></div></div>`;
       }).join("");
-      // Actualizar banner premium si es necesario
       updateAlertPanel();
     },(err)=>{console.error('[Alertas] onSnapshot error:',err);showAlertsEmpty('Error al cargar alertas: '+err.message);});
 
@@ -1016,7 +1073,6 @@ window.deleteAlert=async(id)=>{
   catch(err){console.error('[Alertas] Error delete:',err);alert('No se pudo borrar: '+err.message);}
 };
 
-// Precio automático: buscar precio actual de la ruta
 async function getCurrentPrice(originCityId, destCityId, departure, ret) {
   const originCode = primaryAirportCode(originCityId);
   const destCode = primaryAirportCode(destCityId);
@@ -1029,7 +1085,6 @@ async function getCurrentPrice(originCityId, destCityId, departure, ret) {
     const res = await fetch(`${WORKER_URL}/search-flights?${params.toString()}`);
     const json = await res.json();
     if (json.success && Array.isArray(json.data) && json.data.length) {
-      // Ordenar por precio y tomar el más barato
       const sorted = json.data.sort((a, b) => a.price - b.price);
       return sorted[0].price;
     }
@@ -1040,7 +1095,6 @@ async function getCurrentPrice(originCityId, destCityId, departure, ret) {
   }
 }
 
-// Crear alerta
 async function countUserAlerts(uid){
   try{
     const q=query(collection(db,"flightAlerts"),where("userId","==",uid));
@@ -1071,22 +1125,24 @@ document.getElementById("alertForm").addEventListener("submit",async(e)=>{
   const departureRaw=document.getElementById("alertDeparture").value;
   const returnRaw=document.getElementById("alertReturn").value;
 
-  // Verificar límite de alertas según plan
   const currentCount=await countUserAlerts(currentUser.uid);
   const limits=getPlanLimits();
   if(currentCount>=limits.maxAlerts){
     statusEl.className="app-status err";
     statusEl.innerHTML=`Llegaste al límite de ${limits.maxAlerts} alertas. <button onclick="openPaymentModal()" style="background:none;border:none;color:var(--teal);font-weight:700;cursor:pointer;text-decoration:underline;padding:0">Pasate a Premium</button> para más.`;
-    document.getElementById('premiumBanner').style.display='block';
+    
+    const pBanner = document.getElementById('premiumBanner');
+    pBanner.querySelector('#premiumBannerText').textContent = `Ya tenés ${limits.maxAlerts} alertas. Pasate a Premium para guardar hasta ${appConfig.premiumPlan.maxAlerts} alertas y monitorearlas durante ${appConfig.premiumPlan.months} meses.`;
+    pBanner.querySelector('#premiumBannerPrice').innerHTML = `$${appConfig.premiumPlan.priceUSD || 2} <span>USD / año</span>`;
+    
+    pBanner.style.display='block';
     document.getElementById('alertSubmitBtn').style.display='none';
     return;
   }
 
-  // Buscar precio actual automáticamente
   statusEl.innerHTML='<span class="spinner"></span>Buscando el precio actual de tu ruta…';
   const currentPrice = await getCurrentPrice(originCityId, destinationCityId, departureRaw, returnRaw);
 
-  // Calcular precio máximo según el descuento elegido (0% a 50%, 10% por defecto)
   const discountRaw = document.getElementById("alertDiscount").value;
   const discountPercent = Number(discountRaw);
   if(!Number.isFinite(discountPercent) || discountPercent < 0 || discountPercent > 50){
@@ -1101,13 +1157,17 @@ document.getElementById("alertForm").addEventListener("submit",async(e)=>{
     statusEl.innerHTML='<span class="spinner"></span>Precio actual: USD '+currentPrice+'. Guardando alerta…';
   }
 
+  // NUEVO: Leer el umbral de notificación seleccionado
+  const thresholdRaw = document.getElementById("alertThreshold").value;
+  const alertThresholdPercent = Number(thresholdRaw) || appConfig.defaultAlertThresholdPercent || 15;
+
   try{
     await addDoc(collection(db,"flightAlerts"),{
       userId:currentUser.uid,
       originCityId,destinationCityId,
       maxPrice:maxPrice,
       passengers:passengersRaw?Number(passengersRaw):1,
-      alertThresholdPercent:15,
+      alertThresholdPercent: alertThresholdPercent, // <-- NUEVO CAMPO GUARDADO
       dateFrom:departureRaw?Timestamp.fromDate(new Date(departureRaw+"T00:00:00")):null,
       dateTo:returnRaw?Timestamp.fromDate(new Date(returnRaw+"T00:00:00")):null,
       flexibleDates:!departureRaw,
@@ -1122,6 +1182,8 @@ document.getElementById("alertForm").addEventListener("submit",async(e)=>{
       statusEl.textContent="¡Listo! Tu alerta ya está guardada y la vamos a monitorear.";
     }
     document.getElementById("alertForm").reset();
+    // Restaurar el valor por defecto del umbral después de resetear el formulario
+    document.getElementById("alertThreshold").value = appConfig.defaultAlertThresholdPercent || 15;
     updateAlertPanel();
   }catch(err){
     console.error('[Alertas] Error guardando:',err);
@@ -1136,23 +1198,13 @@ document.getElementById("alertForm").addEventListener("submit",async(e)=>{
 
 // ===== PAGOS =====
 window.initiateStripePayment = function() {
-  // Placeholder: reemplazar con tu URL de Stripe Checkout
   const paymentError = document.getElementById('paymentError');
   const paymentSuccess = document.getElementById('paymentSuccess');
   paymentError.style.display = 'none';
   paymentSuccess.style.display = 'none';
-
-  // Aquí iría la integración real con Stripe
-  // Ejemplo: redirect a Stripe Checkout Session
-  // window.location.href = 'https://checkout.stripe.com/pay/cs_test_...';
-
   paymentSuccess.textContent = 'Redirigiendo a Stripe para el pago seguro…';
   paymentSuccess.style.display = 'block';
-
-  // Para demo, simular éxito después de 2 segundos
-  setTimeout(() => {
-    activatePremium();
-  }, 2000);
+  setTimeout(() => { activatePremium(); }, 2000);
 };
 
 window.initiatePayPalPayment = function() {
@@ -1160,16 +1212,9 @@ window.initiatePayPalPayment = function() {
   const paymentSuccess = document.getElementById('paymentSuccess');
   paymentError.style.display = 'none';
   paymentSuccess.style.display = 'none';
-
-  // Placeholder: reemplazar con tu integración de PayPal
-  // Ejemplo: crear orden en tu backend y redirigir
-
   paymentSuccess.textContent = 'Redirigiendo a PayPal…';
   paymentSuccess.style.display = 'block';
-
-  setTimeout(() => {
-    activatePremium();
-  }, 2000);
+  setTimeout(() => { activatePremium(); }, 2000);
 };
 
 window.initiateMPPayment = function() {
@@ -1177,17 +1222,9 @@ window.initiateMPPayment = function() {
   const paymentSuccess = document.getElementById('paymentSuccess');
   paymentError.style.display = 'none';
   paymentSuccess.style.display = 'none';
-
-  // Placeholder: reemplazar con tu integración de Mercado Pago
-  // Mercado Pago permite pagos internacionales con tarjetas Visa/Mastercard
-  // desde varios países, pero tiene mejor cobertura en LATAM.
-
   paymentSuccess.textContent = 'Redirigiendo a Mercado Pago…';
   paymentSuccess.style.display = 'block';
-
-  setTimeout(() => {
-    activatePremium();
-  }, 2000);
+  setTimeout(() => { activatePremium(); }, 2000);
 };
 
 async function activatePremium() {
@@ -1205,7 +1242,7 @@ async function activatePremium() {
     updateAuthNav();
     updateAlertPanel();
     closePaymentModal();
-    alert('¡Premium activado! Ahora tenés 12 alertas por 12 meses.');
+    alert('¡Premium activado! Ahora tenés ' + appConfig.premiumPlan.maxAlerts + ' alertas por ' + appConfig.premiumPlan.months + ' meses.');
   } catch (err) {
     console.error('[Premium] Error activando:', err);
     const paymentError = document.getElementById('paymentError');
@@ -1215,6 +1252,7 @@ async function activatePremium() {
 }
 
 // Inicializar
+loadAppConfig(); // <-- NUEVO: Cargar configuración al arrancar
 loadDestinations();
 </script>
 </body>
