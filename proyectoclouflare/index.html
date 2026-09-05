@@ -215,7 +215,7 @@ footer a{text-decoration:none;color:rgba(246,250,249,0.55)}footer a:hover{color:
 <body>
 <nav><div class="nav-inner"><a class="brand" href="#top"><svg width="34" height="34" viewBox="0 0 84 84"><rect width="84" height="84" rx="20" fill="#0F9D8D"/><path d="M42 15 L67 64 L55.5 64 L42 37 L28.5 64 L17 64 Z" fill="#F6FAF9"/><circle cx="42" cy="15" r="5.5" fill="#FF7A45"/></svg>alertatrip</a><div class="nav-links"><a href="#board">Qué hace</a><a href="#how">Cómo funciona</a><a href="#destinos">Destinos</a></div><div id="authNavContainer" style="display:flex;align-items:center;gap:10px"><a class="btn btn-coral" href="#buscador" onclick="activateTab('alerta'); return false;">Crear alerta</a></div></div></nav>
 
-<header class="hero" id="top"><div class="wrap hero-grid"><div><span class="eyebrow"><span class="dot"></span>Cobertura internacional · precios en USD</span><h1>No busques vuelos<br>todo el día. <em>Que te<br>busquen los precios.</em></h1><p class="lede">Elegí de dónde a dónde querés viajar, configurá tu alerta una vez, y te avisamos apenas encontramos un precio mejor — vuelos, hoteles y excursiones, estés donde estés.</p><div class="hero-ctas"><a href="#ofertas" class="btn btn-coral">Ver ofertas destacadas</a><a href="#how" class="btn btn-ghost">Ver cómo funciona</a></div><div class="hero-stats"><div><b>76+</b>ciudades cubiertas</div><div><b>USD</b>precios siempre claros</div><div><b>24/7</b>chequeo automático</div></div></div><div class="pass" id="passCard"><span class="pass-badge">¡Bajó el precio!</span><div class="pass-row"><div><div class="pass-route"><span id="passOrigin">EZE</span><span class="arrow">✈</span><span id="passDest">MAD</span></div><div class="pass-city" id="passCities">Buenos Aires → Madrid</div></div><div class="pass-meta">IDA Y VUELTA<br><span id="passDates">08 OCT — 19 OCT</span></div></div><div class="pass-strip"><svg class="plane" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M1 9.5 4 8l2.5 1L10 6.5l3.5-2c.6-.35 1.5.25 1.2.9l-1.5 2.9-3.3 1.9.9 3.6c.15.6-.6 1.1-1.05.7L7.5 12l-2 1.2-.3-2.1L3 9.9z"/></svg><div class="pass-line"><span class="dot"></span></div></div><div class="pass-price-row"><span class="pass-price-label">Precio por persona</span><span class="pass-price"><span class="old">USD 890</span><span class="new" id="passPrice">USD 553</span></span></div></div></div></div></header>
+<header class="hero" id="top"><div class="wrap hero-grid"><div><span class="eyebrow"><span class="dot"></span>Cobertura internacional · precios en USD</span><h1>No busques vuelos<br>todo el día. <em>Que te<br>busquen los precios.</em></h1><p class="lede">Elegí de dónde a dónde querés viajar, configurá tu alerta una vez, y te avisamos apenas encontramos un precio mejor — vuelos, hoteles y excursiones, estés donde estés.</p><div class="hero-ctas"><a href="#ofertas" class="btn btn-coral">Ver ofertas destacadas</a><a href="#how" class="btn btn-ghost">Ver cómo funciona</a><a href="#" class="btn btn-ghost" onclick="event.preventDefault();openHotelsGeneric()">🏨 Buscar hoteles</a><a href="#" class="btn btn-ghost" onclick="event.preventDefault();openExcursionsGeneric()">🎯 Buscar excursiones</a></div><div class="hero-stats"><div><b>76+</b>ciudades cubiertas</div><div><b>USD</b>precios siempre claros</div><div><b>24/7</b>chequeo automático</div></div></div><div class="pass" id="passCard"><span class="pass-badge">¡Bajó el precio!</span><div class="pass-row"><div><div class="pass-route"><span id="passOrigin">EZE</span><span class="arrow">✈</span><span id="passDest">MAD</span></div><div class="pass-city" id="passCities">Buenos Aires → Madrid</div></div><div class="pass-meta">IDA Y VUELTA<br><span id="passDates">08 OCT — 19 OCT</span></div></div><div class="pass-strip"><svg class="plane" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M1 9.5 4 8l2.5 1L10 6.5l3.5-2c.6-.35 1.5.25 1.2.9l-1.5 2.9-3.3 1.9.9 3.6c.15.6-.6 1.1-1.05.7L7.5 12l-2 1.2-.3-2.1L3 9.9z"/></svg><div class="pass-line"><span class="dot"></span></div></div><div class="pass-price-row"><span class="pass-price-label">Precio por persona</span><span class="pass-price"><span class="old">USD 890</span><span class="new" id="passPrice">USD 553</span></span></div></div></div></div></header>
 
 <section class="offers-section" id="ofertas"><div class="wrap">
   <div class="offers-header">
@@ -366,14 +366,13 @@ footer a{text-decoration:none;color:rgba(246,250,249,0.55)}footer a:hover{color:
     <h2 style="color:var(--teal-dark);margin:0 0 6px">Activar Premium</h2>
     <p style="color:var(--muted);margin:0 0 20px;font-size:14px">Desbloqueá alertas ilimitadas y monitoreo extendido.</p>
     <div style="background:linear-gradient(135deg,#FFF9E6,#FFF0CC);border:2px solid #FFD700;border-radius:16px;padding:20px;text-align:center;margin-bottom:20px">
-      <div style="font-family:'IBM Plex Mono',monospace;font-size:32px;font-weight:700;color:#B8860B" id="paymentModalPrice">$2 <span style="font-size:16px">USD / año</span></div>
-      <div style="color:#A08030;font-size:13px;margin-top:8px" id="paymentModalFeatures">✓ 12 alertas activas<br>✓ Monitoreo por 12 meses<br>✓ Notificaciones push<br>✓ Acceso desde cualquier dispositivo</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:26px;font-weight:700;color:#B8860B" id="paymentModalPrice">$5 USD <span style="font-size:14px">o</span> $6.500 ARS <span style="font-size:16px">/ 6 meses</span></div>
+      <div style="color:#A08030;font-size:13px;margin-top:8px" id="paymentModalFeatures">✓ 12 alertas activas<br>✓ Monitoreo por 6 meses<br>✓ Notificaciones push<br>✓ Acceso desde cualquier dispositivo</div>
     </div>
     <div id="paymentError" class="auth-error" style="display:none"></div>
     <div id="paymentSuccess" class="auth-success" style="display:none"></div>
-    <button class="auth-btn" id="payStripeBtn" onclick="initiateStripePayment()" style="background:#6772E5;margin-bottom:10px">💳 Pagar con tarjeta (Stripe)</button>
-    <button class="auth-btn" id="payPayPalBtn" onclick="initiatePayPalPayment()" style="background:#0070BA;margin-bottom:10px">🅿️ Pagar con PayPal</button>
-    <button class="auth-btn" id="payMPBtn" onclick="initiateMPPayment()" style="background:#00B1EA">💰 Pagar con Mercado Pago</button>
+    <button class="auth-btn" id="payMPBtn" onclick="initiateMPPayment()" style="background:#00B1EA;margin-bottom:10px">💰 Pagar en pesos (Mercado Pago)</button>
+    <button class="auth-btn" id="payLSBtn" onclick="initiateLemonSqueezyPayment()" style="background:#FFC233;color:#3a2c00">🍋 Pagar en dólares (tarjeta internacional)</button>
     <p style="text-align:center;margin-top:14px;font-size:12px;color:var(--muted)">Pago seguro. Se procesa por el proveedor que elijas.</p>
   </div>
 </div>
@@ -495,7 +494,7 @@ let planExpiresAt=null;
 let appConfig = {
   defaultAlertThresholdPercent: 15,
   freePlan: { maxAlerts: 2, months: 2, name: 'Gratis' },
-  premiumPlan: { maxAlerts: 12, months: 12, priceUSD: 2, name: 'Premium' },
+  premiumPlan: { maxAlerts: 12, months: 6, priceUSD: 5, priceARS: 6500, name: 'Premium' },
   autoMaxPriceFactor: 0.5,
   minMaxPriceUSD: 20
 };
@@ -528,11 +527,14 @@ async function loadAppConfig() {
 function updatePaymentModal() {
   const priceEl = document.getElementById('paymentModalPrice');
   const featuresEl = document.getElementById('paymentModalFeatures');
+  const months = appConfig.premiumPlan.months || 6;
+  const priceUSD = appConfig.premiumPlan.priceUSD || 5;
+  const priceARS = appConfig.premiumPlan.priceARS || 6500;
   if (priceEl) {
-    priceEl.innerHTML = `$${appConfig.premiumPlan.priceUSD || 2} <span style="font-size:16px">USD / año</span>`;
+    priceEl.innerHTML = `$${priceUSD} USD <span style="font-size:14px">o</span> $${priceARS.toLocaleString('es-AR')} ARS <span style="font-size:16px">/ ${months} meses</span>`;
   }
   if (featuresEl) {
-    featuresEl.innerHTML = `✓ ${appConfig.premiumPlan.maxAlerts || 12} alertas activas<br>✓ Monitoreo por ${appConfig.premiumPlan.months || 12} meses<br>✓ Notificaciones push<br>✓ Acceso desde cualquier dispositivo`;
+    featuresEl.innerHTML = `✓ ${appConfig.premiumPlan.maxAlerts || 12} alertas activas<br>✓ Monitoreo por ${months} meses<br>✓ Notificaciones push<br>✓ Acceso desde cualquier dispositivo`;
   }
 }
 
@@ -687,7 +689,7 @@ async function loadUserPlan(uid){
     if(snap.exists()){
       const data=snap.data();
       userPlan=data.plan||'free';
-      planExpiresAt=data.planExpiresAt?data.planExpiresAt.toDate():null;
+      planExpiresAt=data.planExpiresAt?(data.planExpiresAt.toDate?data.planExpiresAt.toDate():new Date(data.planExpiresAt)):null;
       if(userPlan==='premium'&&planExpiresAt&&planExpiresAt<new Date()){
         userPlan='free';
         planExpiresAt=null;
@@ -738,7 +740,7 @@ function updateAlertPanel(){
     premiumBanner.style.display='none';
     submitBtn.style.display='block';
   }else{
-    note.innerHTML=`🎁 <b>Plan ${limits.name}</b> — ${limits.maxAlerts} alertas por ${limits.months} meses. <button onclick="openPaymentModal()" style="background:none;border:none;color:var(--teal);font-weight:700;cursor:pointer;text-decoration:underline;padding:0">Pasate a Premium por $${limits.priceUSD || 2} USD/año</button>.`;
+    note.innerHTML=`🎁 <b>Plan ${limits.name}</b> — ${limits.maxAlerts} alertas por ${limits.months} meses. <button onclick="openPaymentModal()" style="background:none;border:none;color:var(--teal);font-weight:700;cursor:pointer;text-decoration:underline;padding:0">Pasate a Premium</button>.`;
   }
 }
 
@@ -835,6 +837,16 @@ function klookHotelLink(destId,depDate,retDate,pax){
 function kkdayLink(){
   return "https://tp.media/r?campaign_id=633&marker=761958&p=9074&trs=567185&u=https%3A%2F%2Fkkday.com";
 }
+
+// Accesos directos desde el hero, sin necesidad de haber buscado un vuelo antes.
+// Si el usuario ya eligió un destino en el buscador, usamos ese; si no, el link
+// genérico de Klook/KKday (mismo fallback que ya usaba klookHotelLink internamente).
+window.openHotelsGeneric = function() {
+  openRedirectModal(klookHotelLink(null, null, null, 1), 'Te llevamos a Klook', '🏨');
+};
+window.openExcursionsGeneric = function() {
+  openRedirectModal(kkdayLink(), 'Te llevamos a KKday', '🎯');
+};
 
 function buildBookingLink(entry){
   if(entry.link){try{const u=new URL(entry.link,"https://www.aviasales.com");u.searchParams.set("locale","es");u.searchParams.set("marker","761958");return u.toString();}catch{return `https://www.aviasales.com${entry.link.startsWith('/')?'':'/'}${entry.link}?marker=761958&locale=es`;}}
@@ -1133,7 +1145,7 @@ document.getElementById("alertForm").addEventListener("submit",async(e)=>{
     
     const pBanner = document.getElementById('premiumBanner');
     pBanner.querySelector('#premiumBannerText').textContent = `Ya tenés ${limits.maxAlerts} alertas. Pasate a Premium para guardar hasta ${appConfig.premiumPlan.maxAlerts} alertas y monitorearlas durante ${appConfig.premiumPlan.months} meses.`;
-    pBanner.querySelector('#premiumBannerPrice').innerHTML = `$${appConfig.premiumPlan.priceUSD || 2} <span>USD / año</span>`;
+    pBanner.querySelector('#premiumBannerPrice').innerHTML = `$${appConfig.premiumPlan.priceUSD || 5} USD <span>/ ${appConfig.premiumPlan.months || 6} meses</span>`;
     
     pBanner.style.display='block';
     document.getElementById('alertSubmitBtn').style.display='none';
@@ -1197,59 +1209,99 @@ document.getElementById("alertForm").addEventListener("submit",async(e)=>{
 });
 
 // ===== PAGOS =====
-window.initiateStripePayment = function() {
-  const paymentError = document.getElementById('paymentError');
-  const paymentSuccess = document.getElementById('paymentSuccess');
-  paymentError.style.display = 'none';
-  paymentSuccess.style.display = 'none';
-  paymentSuccess.textContent = 'Redirigiendo a Stripe para el pago seguro…';
-  paymentSuccess.style.display = 'block';
-  setTimeout(() => { activatePremium(); }, 2000);
-};
+// IMPORTANTE: acá ya NO se activa Premium desde el navegador. El navegador solo pide
+// al Worker que le genere un link de pago real, y quien realmente activa el plan
+// Premium en Firestore es el Worker (server-side), después de confirmar con Mercado
+// Pago / Lemon Squeezy que el pago fue aprobado de verdad. Así se cierra el agujero
+// de seguridad que tenía la versión anterior (activatePremium() invocable desde la
+// consola del navegador sin pagar nada).
 
-window.initiatePayPalPayment = function() {
-  const paymentError = document.getElementById('paymentError');
-  const paymentSuccess = document.getElementById('paymentSuccess');
-  paymentError.style.display = 'none';
-  paymentSuccess.style.display = 'none';
-  paymentSuccess.textContent = 'Redirigiendo a PayPal…';
-  paymentSuccess.style.display = 'block';
-  setTimeout(() => { activatePremium(); }, 2000);
-};
-
-window.initiateMPPayment = function() {
-  const paymentError = document.getElementById('paymentError');
-  const paymentSuccess = document.getElementById('paymentSuccess');
-  paymentError.style.display = 'none';
-  paymentSuccess.style.display = 'none';
-  paymentSuccess.textContent = 'Redirigiendo a Mercado Pago…';
-  paymentSuccess.style.display = 'block';
-  setTimeout(() => { activatePremium(); }, 2000);
-};
-
-async function activatePremium() {
+window.initiateMPPayment = async function() {
   if (!currentUser) return;
+  const paymentError = document.getElementById('paymentError');
+  const paymentSuccess = document.getElementById('paymentSuccess');
+  paymentError.style.display = 'none';
+  paymentSuccess.style.display = 'none';
   try {
-    const expiresAt = new Date();
-    expiresAt.setFullYear(expiresAt.getFullYear() + 1);
-    await updateDoc(doc(db, 'users', currentUser.uid), {
-      plan: 'premium',
-      planExpiresAt: Timestamp.fromDate(expiresAt),
-      upgradedAt: serverTimestamp()
+    const res = await fetch(`${WORKER_URL}/create-mp-preference`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId: currentUser.uid }),
     });
-    userPlan = 'premium';
-    planExpiresAt = expiresAt;
-    updateAuthNav();
-    updateAlertPanel();
-    closePaymentModal();
-    alert('¡Premium activado! Ahora tenés ' + appConfig.premiumPlan.maxAlerts + ' alertas por ' + appConfig.premiumPlan.months + ' meses.');
+    const data = await res.json();
+    if (!res.ok || !data.init_point) throw new Error(data.error || 'No se pudo generar el link de pago.');
+    paymentSuccess.textContent = 'Redirigiendo a Mercado Pago…';
+    paymentSuccess.style.display = 'block';
+    window.location.href = data.init_point;
   } catch (err) {
-    console.error('[Premium] Error activando:', err);
-    const paymentError = document.getElementById('paymentError');
-    paymentError.textContent = 'Error al activar Premium: ' + err.message;
+    console.error('[MP] Error:', err);
+    paymentError.textContent = 'Error al iniciar el pago: ' + err.message;
     paymentError.style.display = 'block';
   }
-}
+};
+
+window.initiateLemonSqueezyPayment = async function() {
+  if (!currentUser) return;
+  const paymentError = document.getElementById('paymentError');
+  const paymentSuccess = document.getElementById('paymentSuccess');
+  paymentError.style.display = 'none';
+  paymentSuccess.style.display = 'none';
+  try {
+    const res = await fetch(`${WORKER_URL}/create-lemonsqueezy-checkout`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId: currentUser.uid }),
+    });
+    const data = await res.json();
+    if (!res.ok || !data.url) throw new Error(data.error || 'No se pudo generar el link de pago.');
+    paymentSuccess.textContent = 'Redirigiendo al pago…';
+    paymentSuccess.style.display = 'block';
+    window.location.href = data.url;
+  } catch (err) {
+    console.error('[LemonSqueezy] Error:', err);
+    paymentError.textContent = 'Error al iniciar el pago: ' + err.message;
+    paymentError.style.display = 'block';
+  }
+};
+
+// Cuando el usuario vuelve del pago (back_urls de MP, o la redirección de Lemon
+// Squeezy), le mostramos un aviso. La activación real del plan puede tardar unos
+// segundos (el webhook llega de forma asíncrona) — como la app ya escucha los
+// cambios de Firestore en tiempo real, el plan se va a actualizar solo en cuanto
+// el Worker confirme el pago, sin que el usuario tenga que recargar la página.
+(function checkPaymentReturn() {
+  const params = new URLSearchParams(window.location.search);
+  const status = params.get('premium');
+  if (!status) return;
+  const msg = {
+    success: '¡Pago recibido! Puede tardar unos segundos en activarse tu Premium.',
+    pending: 'Tu pago está pendiente de confirmación.',
+    failure: 'El pago no se completó. Podés intentarlo de nuevo cuando quieras.',
+  }[status];
+  if (msg) setTimeout(() => alert(msg), 500);
+  // Limpiar el parámetro de la URL para que no quede pegado si recarga la página
+  params.delete('premium');
+  const newUrl = window.location.pathname + (params.toString() ? '?' + params.toString() : '');
+  window.history.replaceState({}, '', newUrl);
+
+  // El webhook puede tardar unos segundos en llegar y escribir en Firestore, y la
+  // app solo carga el plan una vez (al loguearse), no de forma automática/en vivo.
+  // Por eso, si volvemos de un pago, reintentamos leer el plan varias veces durante
+  // medio minuto, esperando a que currentUser ya esté disponible (onAuthStateChanged
+  // puede tardar un instante en resolver al recargar la página).
+  if (status === 'success') {
+    let attempts = 0;
+    const retry = setInterval(async () => {
+      attempts++;
+      if (currentUser) {
+        await loadUserPlan(currentUser.uid);
+        if (userPlan === 'premium' || attempts >= 10) clearInterval(retry);
+      } else if (attempts >= 10) {
+        clearInterval(retry);
+      }
+    }, 3000);
+  }
+})();
 
 // Inicializar
 loadAppConfig(); // <-- NUEVO: Cargar configuración al arrancar
