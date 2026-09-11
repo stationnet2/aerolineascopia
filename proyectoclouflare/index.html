@@ -239,7 +239,30 @@ footer a{text-decoration:none;color:rgba(246,250,249,0.55)}footer a:hover{color:
 
 <section class="app-section" id="buscador"><div class="wrap"><div class="app-box"><div class="app-tabs"><button class="app-tab active" data-tab="buscar" type="button">Buscar vuelos</button><button class="app-tab" data-tab="alerta" type="button">Crear alerta</button><button class="app-tab" data-tab="mias" type="button">Mis alertas <span id="misAlertasCount"></span></button></div>
 
-<div class="app-panel active" id="panel-buscar"><form id="searchForm" class="app-form"><div class="field"><label>Desde</label><select id="searchOrigin" required><option value="">Elegí ciudad de origen</option></select></div><div class="field"><label>Hacia</label><select id="searchDest" required><option value="">Elegí destino</option></select></div><div class="field field-wide"><label>Tipo de viaje</label><div class="pill-toggle"><button type="button" class="pill active" data-trip="one_way">Solo ida</button><button type="button" class="pill" data-trip="round_trip">Ida y vuelta</button></div></div><div class="field field-wide"><div class="date-toggle"><label><input type="checkbox" id="searchUseDates" checked> Buscar con fechas específicas</label></div></div><div class="field" id="searchDepartureField"><label>Fecha de ida</label><input type="date" id="searchDeparture"></div><div class="field" id="searchReturnField" style="display:none"><label>Fecha de vuelta</label><input type="date" id="searchReturn"></div><button type="submit" class="btn btn-coral" style="width:100%;justify-content:center;margin-top:6px">Buscar precios</button></form><div id="searchStatus" class="app-status"></div><div id="searchResults" class="results-list"></div></div>
+<div class="app-panel active" id="panel-buscar"><form id="searchForm" class="app-form"><div class="field"><label>Desde</label><select id="searchOrigin" required><option value="">Elegí ciudad de origen</option></select></div><div class="field"><label>Hacia</label><select id="searchDest" required><option value="">Elegí destino</option></select></div><div class="field field-wide"><label>Tipo de viaje</label><div class="pill-toggle"><button type="button" class="pill active" data-trip="one_way">Solo ida</button><button type="button" class="pill" data-trip="round_trip">Ida y vuelta</button></div></div><div class="field field-wide"><div class="date-toggle"><label><input type="checkbox" id="searchUseDates" checked> Buscar con fechas específicas</label></div></div><div class="field" id="searchDepartureField"><label>Fecha de ida</label><input type="date" id="searchDeparture"></div><div class="field" id="searchReturnField" style="display:none"><label>Fecha de vuelta</label><input type="date" id="searchReturn"></div><button type="submit" class="btn btn-coral" style="width:100%;justify-content:center;margin-top:6px">Buscar precios</button></form><div id="searchStatus" class="app-status"></div><div id="searchResults" class="results-list"></div><div class="premium-search-tools" id="premiumSearchTools" style="display:block;margin-top:16px;padding:16px;background:#F7F7F8;border:1px solid #D9DCE1;border-radius:18px">
+  <div style="font-weight:900;font-size:16px;margin-bottom:6px">✨ Herramientas Premium</div>
+  <div id="premiumToolsHint" style="font-size:12px;color:#667085;margin-bottom:12px">Buscá con más libertad: elegí un mes o viajá según tu presupuesto.</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+    <button type="button" id="premiumMonthBtn" style="border:1px solid #C7CBD1;background:#E5E7EB;color:#68707A;border-radius:12px;padding:13px 12px;font-weight:800;cursor:pointer">🔒 Buscar por mes</button>
+    <button type="button" id="premiumBudgetBtn" style="border:1px solid #C7CBD1;background:#E5E7EB;color:#68707A;border-radius:12px;padding:13px 12px;font-weight:800;cursor:pointer">🔒 Buscar por presupuesto</button>
+  </div>
+  <div id="premiumMonthPanel" style="display:none;margin-top:12px">
+    <label style="display:block;font-weight:700;font-size:13px;margin-bottom:6px">Mes del viaje</label>
+    <input type="month" id="premiumTravelMonth2" style="width:100%;margin-bottom:10px">
+    <button type="button" class="btn btn-coral" id="premiumMonthSearchBtn" style="width:100%">Buscar opciones del mes</button>
+  </div>
+  <div id="premiumBudgetPanel" style="display:none;margin-top:12px">
+    <label style="display:block;font-weight:700;font-size:13px;margin-bottom:6px">Presupuesto máximo (USD)</label>
+    <input type="number" id="premiumBudget2" min="50" max="10000" step="10" value="500" style="width:100%;margin-bottom:10px">
+    <label style="display:block;font-weight:700;font-size:13px;margin-bottom:6px">Continente / región</label>
+    <select id="premiumRegion2" style="width:100%;margin-bottom:10px">
+      <option value="all">Cualquier continente</option><option value="europe">Europa</option><option value="africa">África</option><option value="america">América</option><option value="asia">Asia</option><option value="oceania">Oceanía</option>
+    </select>
+    <label style="display:block;font-weight:700;font-size:13px;margin-bottom:6px">Mes (opcional)</label>
+    <input type="month" id="premiumBudgetMonth2" style="width:100%;margin-bottom:10px">
+    <button type="button" class="btn btn-coral" id="premiumBudgetSearchBtn" style="width:100%">Buscar destinos dentro del presupuesto</button>
+  </div>
+</div></div>
 
 <div class="app-panel" id="panel-alerta">
   <div id="alertaLoginRequired" style="display:none">
@@ -263,6 +286,23 @@ footer a{text-decoration:none;color:rgba(246,250,249,0.55)}footer a:hover{color:
       <div class="field"><label>Pasajeros</label><input type="number" id="alertPassengers" value="1" min="1" max="9"></div>
       <div class="field"><label>Fecha de ida (opcional)</label><input type="date" id="alertDeparture"></div>
       <div class="field"><label>Fecha de vuelta (opcional)</label><input type="date" id="alertReturn"></div>
+
+      <div class="field field-wide" id="alertPremiumOptions" style="display:none">
+        <div style="background:#FFFBF5;padding:14px;border-radius:14px;border:1px solid #F4D7A1">
+          <div style="font-weight:900;margin-bottom:8px">✨ Opciones Premium para esta alerta</div>
+          <select id="alertPremiumMode" style="width:100%;margin-bottom:9px">
+            <option value="exact">Fechas concretas</option>
+            <option value="month">Elegir un mes</option>
+            <option value="flexible">Sin fecha fija</option>
+            <option value="budget">Tengo un presupuesto</option>
+          </select>
+          <input type="month" id="alertPremiumMonth" style="display:none;width:100%;margin-bottom:9px">
+          <div id="alertPremiumBudgetFields" style="display:none;grid-template-columns:1fr 1fr;gap:8px">
+            <input type="number" id="alertPremiumBudget" min="100" max="5000" step="50" value="500" placeholder="Presupuesto máximo USD">
+            <select id="alertPremiumRegion"><option value="all">Cualquier región</option><option value="europe">Europa</option><option value="africa">África</option><option value="america">América</option><option value="asia">Asia</option><option value="oceania">Oceanía</option></select>
+          </div>
+        </div>
+      </div>
       
       <div class="field field-wide">
         <label for="alertDiscount">¿Qué descuento querés esperar?</label>
@@ -707,6 +747,8 @@ async function loadUserPlan(uid){
     }
     updateAuthNav();
     updateAlertPanel();
+    updatePremiumSearchOptions();
+    refreshPremiumToolVisuals();
   }catch(err){console.error('[Plan] Error cargando plan:',err);}
 }
 
@@ -718,7 +760,23 @@ function getPlanLimits(){
   return appConfig.freePlan;
 }
 
+function updateAlertPremiumOptions(){
+  const box=document.getElementById('alertPremiumOptions');
+  if(!box)return;
+  box.style.display='block';
+}
+const alertPremiumModeEl=document.getElementById('alertPremiumMode');
+if(alertPremiumModeEl){
+  alertPremiumModeEl.addEventListener('change',()=>{
+    const mode=alertPremiumModeEl.value;
+    document.getElementById('alertPremiumMonth').style.display=(mode==='month'||mode==='budget')?'block':'none';
+    document.getElementById('alertPremiumBudgetFields').style.display=(mode==='budget')?'grid':'none';
+    if(mode==='flexible'){document.getElementById('alertDeparture').value='';document.getElementById('alertReturn').value='';}
+  });
+}
+
 function updateAlertPanel(){
+  updateAlertPremiumOptions();
   const loginRequired=document.getElementById('alertaLoginRequired');
   const formContainer=document.getElementById('alertaFormContainer');
   const premiumBanner=document.getElementById('premiumBanner');
@@ -908,6 +966,65 @@ function addDays(dateStr, days) {
   d.setDate(d.getDate() + days);
   return d.toISOString().slice(0, 10);
 }
+function updatePremiumSearchOptions(){
+  const box=document.getElementById('premiumSearchTools');
+  if(!box)return;
+  box.style.display='block';
+}
+
+function hidePremiumPanels(){
+  const m=document.getElementById('premiumMonthPanel');
+  const b=document.getElementById('premiumBudgetPanel');
+  if(m)m.style.display='none';
+  if(b)b.style.display='none';
+}
+
+function getPremiumOriginDestination(){
+  const originId=document.getElementById('searchOrigin').value;
+  const destId=document.getElementById('searchDest').value;
+  return {originId,destId,originCode:primaryAirportCode(originId),destCode:primaryAirportCode(destId)};
+}
+
+const premiumMonthBtn=document.getElementById('premiumMonthBtn');
+const premiumBudgetBtn=document.getElementById('premiumBudgetBtn');
+function refreshPremiumToolVisuals(){
+  const locked=userPlan!=='premium';
+  const hint=document.getElementById('premiumToolsHint');
+  [premiumMonthBtn,premiumBudgetBtn].forEach(btn=>{ if(!btn)return; btn.style.background=locked?'#E5E7EB':'#FFF4D6'; btn.style.color=locked?'#68707A':'#7A5A00'; btn.style.borderColor=locked?'#C7CBD1':'#E7C66A'; btn.textContent=locked?(btn===premiumMonthBtn?'🔒 Buscar por mes':'🔒 Buscar por presupuesto'):(btn===premiumMonthBtn?'📅 Buscar por mes':'💰 Buscar por presupuesto'); });
+  if(hint)hint.textContent=locked?'Vista previa de las herramientas Premium. Activá Premium para utilizarlas.':'Herramientas independientes de la búsqueda normal.';
+}
+if(premiumMonthBtn)premiumMonthBtn.addEventListener('click',()=>{
+  if(userPlan!=='premium'){ openPaymentModal(); return; }
+  hidePremiumPanels(); document.getElementById('premiumMonthPanel').style.display='block';
+});
+if(premiumBudgetBtn)premiumBudgetBtn.addEventListener('click',()=>{
+  if(userPlan!=='premium'){ openPaymentModal(); return; }
+  hidePremiumPanels(); document.getElementById('premiumBudgetPanel').style.display='block';
+});
+refreshPremiumToolVisuals();
+
+async function runPremiumMonthSearch(){
+  const statusEl=document.getElementById('searchStatus'); const resultsEl=document.getElementById('searchResults');
+  const {originCode,destCode}=getPremiumOriginDestination(); const month=document.getElementById('premiumTravelMonth2').value;
+  if(!originCode||!destCode){statusEl.className='app-status err';statusEl.textContent='Elegí origen y destino en la búsqueda normal.';return;}
+  if(!month){statusEl.className='app-status err';statusEl.textContent='Elegí el mes del viaje.';return;}
+  resultsEl.innerHTML=''; statusEl.className='app-status'; statusEl.innerHTML='<span class="spinner"></span>Buscando opciones de ese mes...';
+  try{const params=new URLSearchParams({origin:originCode,destination:destCode,currency:'usd',month}); const json=await fetch(`${WORKER_URL}/search-month-trip?${params.toString()}`).then(r=>r.json()); renderSearchResults(json,statusEl,resultsEl);}
+  catch(e){statusEl.className='app-status err';statusEl.textContent='No pudimos realizar la búsqueda por mes.';console.error(e);}
+}
+
+async function runPremiumBudgetSearch(){
+  const statusEl=document.getElementById('searchStatus'); const resultsEl=document.getElementById('searchResults');
+  const {originCode}=getPremiumOriginDestination(); const budget=document.getElementById('premiumBudget2').value||'500'; const region=document.getElementById('premiumRegion2').value||'all'; const month=document.getElementById('premiumBudgetMonth2').value;
+  if(!originCode){statusEl.className='app-status err';statusEl.textContent='Elegí primero la ciudad de origen.';return;}
+  resultsEl.innerHTML=''; statusEl.className='app-status'; statusEl.innerHTML='<span class="spinner"></span>Buscando destinos dentro de tu presupuesto...';
+  try{const params=new URLSearchParams({origin:originCode,currency:'usd',budget,region,trip_type:'round_trip'}); if(month)params.set('month',month); const json=await fetch(`${WORKER_URL}/search-budget-destinations?${params.toString()}`).then(r=>r.json()); renderSearchResults(json,statusEl,resultsEl);}
+  catch(e){statusEl.className='app-status err';statusEl.textContent='No pudimos realizar la búsqueda por presupuesto.';console.error(e);}
+}
+
+const premiumMonthSearchBtn=document.getElementById('premiumMonthSearchBtn'); if(premiumMonthSearchBtn)premiumMonthSearchBtn.addEventListener('click',runPremiumMonthSearch);
+const premiumBudgetSearchBtn=document.getElementById('premiumBudgetSearchBtn'); if(premiumBudgetSearchBtn)premiumBudgetSearchBtn.addEventListener('click',runPremiumBudgetSearch);
+
 async function searchFlightsWorker(originCode, destCode, tripType, departure, ret) {
   const params = new URLSearchParams({ origin: originCode, destination: destCode, currency: "usd", trip_type: tripType });
   if (departure) params.set("departure_at", departure);
@@ -915,28 +1032,57 @@ async function searchFlightsWorker(originCode, destCode, tripType, departure, re
   const res = await fetch(`${WORKER_URL}/search-flights?${params.toString()}`);
   return res.json();
 }
+async function searchFlexibleRoundTripWorker(originCode, destCode) {
+  const params = new URLSearchParams({
+    origin: originCode,
+    destination: destCode,
+    currency: 'usd',
+    trip_type: 'round_trip'
+  });
+  const res = await fetch(`${WORKER_URL}/search-flights?${params.toString()}`);
+  return await res.json();
+}
+function renderSearchResults(json,statusEl,resultsEl){
+  if(!json || !json.success || !Array.isArray(json.data) || !json.data.length){statusEl.className='app-status err';statusEl.textContent='No encontramos opciones para esa búsqueda.';return;}
+  statusEl.className='app-status ok';
+  if(json.month_search) statusEl.textContent=`📅 Opciones de ida y vuelta para ${json.month}.`;
+  else if(json.budget_search) statusEl.textContent=`💰 Opciones de ida y vuelta dentro de USD ${json.budget}.`;
+  else statusEl.textContent='';
+  const top=json.data.slice(0,8);
+  resultsEl.innerHTML=top.map(entry=>{
+    const link=buildBookingLink(entry); const dates=entry.return_at?`${entry.departure_at?.slice(0,10)||''} → ${entry.return_at?.slice(0,10)||''}`:(entry.departure_at?.slice(0,10)||'Fecha flexible');
+    const badges=(entry.reference_price?'<span class="badge badge-coral">📊 Referencia</span>':'')+(entry.month_search?'<span class="badge badge-teal">Mes</span>':'')+(entry.budget_search?'<span class="badge badge-teal">Presupuesto</span>':'');
+    return `<div class="result-card"><div style="flex:1;min-width:200px"><div class="result-route">${entry.origin_airport||''} → ${entry.destination_airport||''} ${badges}</div><div class="result-meta">${dates} · ${entry.airline||''}${entry.transfers===0?' · Directo':entry.transfers?' · '+entry.transfers+' escala(s)':''}${entry.return_at?' · Ida y vuelta':''}</div></div><div class="result-price">${entry.currency||'USD'} ${entry.price}</div>${link?`<a class="result-link" href="${link}" target="_blank" rel="noopener">Ver oferta</a>`:''}</div>`;
+  }).join('');
+}
+
 document.getElementById("searchForm").addEventListener("submit", async (e) => {
   e.preventDefault();
   const statusEl = document.getElementById("searchStatus");
   const resultsEl = document.getElementById("searchResults");
   resultsEl.innerHTML = "";
   statusEl.className = "app-status";
-  statusEl.innerHTML = '<span class="spinner"></span>Buscando precios reales...';
+  statusEl.innerHTML = '<span class="spinner"></span>Buscando vuelos...';
   const originId = document.getElementById("searchOrigin").value;
   const destId = document.getElementById("searchDest").value;
   const tripType = document.querySelector('#panel-buscar .pill.active').dataset.trip;
   const useDates = document.getElementById('searchUseDates').checked;
-  const departure = useDates ? document.getElementById("searchDeparture").value : "";
+  let departure = useDates ? document.getElementById("searchDeparture").value : "";
   const ret = useDates ? document.getElementById("searchReturn").value : "";
   const originCode = primaryAirportCode(originId);
   const destCode = primaryAirportCode(destId);
   if (!originCode || !destCode) { statusEl.className = "app-status err"; statusEl.textContent = "Elegí origen y destino."; return; }
 
   try {
-    let json = await searchFlightsWorker(originCode, destCode, tripType, departure, ret);
+    let json;
+    if(!useDates && tripType==='round_trip'){
+      json=await searchFlexibleRoundTripWorker(originCode,destCode);
+    }else{
+      json=await searchFlightsWorker(originCode,destCode,tripType,departure,ret);
+    }
     let usedNearby = false;
 
-    if ((!json.success || !Array.isArray(json.data) || !json.data.length) && departure) {
+    if (tripType !== 'round_trip' && (!json.success || !Array.isArray(json.data) || !json.data.length) && departure) {
       statusEl.innerHTML = '<span class="spinner"></span>No hubo vuelos para esa fecha exacta. Buscando fechas cercanas (±7 días)...';
       const requests = [];
       for (let offset = 1; offset <= 7; offset++) {
@@ -970,7 +1116,8 @@ document.getElementById("searchForm").addEventListener("submit", async (e) => {
     if (usedNearby) { statusEl.className = "app-status ok"; statusEl.innerHTML = `<span style="display:block;margin-bottom:8px">📅 ${json.message}</span>`; }
     else if (json.nearby_dates) { statusEl.className = "app-status ok"; statusEl.innerHTML = `<span style="display:block;margin-bottom:8px">📅 ${json.message || "Mostramos fechas cercanas porque no hubo vuelos para la fecha exacta."}</span>`; }
     else if (json.fallback) { statusEl.className = "app-status ok"; statusEl.innerHTML = `<span style="display:block;margin-bottom:8px">✈️ Vuelo de ida + vuelo de vuelta por separado</span>`; }
-    else if (json.flexible_dates) { statusEl.className = "app-status ok"; statusEl.innerHTML = `<span style="display:block;margin-bottom:8px">📅 Mostramos las mejores opciones con fechas variadas</span>`; }
+    else if (json.flexible_round_trip) { statusEl.className = 'app-status ok'; statusEl.innerHTML = `<span style="display:block;margin-bottom:8px">📅 Ida y vuelta calculadas por separado · regreso de referencia +7 días</span>`; }
+    else if (json.flexible_dates) { statusEl.className = "app-status ok"; statusEl.innerHTML = `<span style="display:block;margin-bottom:8px">📅 Mostramos varias opciones económicas en los próximos meses · regreso de referencia +7 días</span>`; }
     else { statusEl.textContent = ""; }
 
     const top = json.data.slice(0, 8);
@@ -1137,6 +1284,10 @@ document.getElementById("alertForm").addEventListener("submit",async(e)=>{
   const passengersRaw=document.getElementById("alertPassengers").value;
   const departureRaw=document.getElementById("alertDeparture").value;
   const returnRaw=document.getElementById("alertReturn").value;
+  const premiumMode = userPlan==='premium' ? (document.getElementById('alertPremiumMode')?.value || 'exact') : 'exact';
+  const premiumMonth = document.getElementById('alertPremiumMonth')?.value || '';
+  const premiumBudget = Number(document.getElementById('alertPremiumBudget')?.value || '0');
+  const premiumRegion = document.getElementById('alertPremiumRegion')?.value || 'all';
 
   const currentCount=await countUserAlerts(currentUser.uid);
   const limits=getPlanLimits();
@@ -1154,7 +1305,7 @@ document.getElementById("alertForm").addEventListener("submit",async(e)=>{
   }
 
   statusEl.innerHTML='<span class="spinner"></span>Buscando el precio actual de tu ruta…';
-  const currentPrice = await getCurrentPrice(originCityId, destinationCityId, departureRaw, returnRaw);
+  const currentPrice = premiumMode==='exact' ? await getCurrentPrice(originCityId, destinationCityId, departureRaw, returnRaw) : null;
 
   const discountRaw = document.getElementById("alertDiscount").value;
   const discountPercent = Number(discountRaw);
@@ -1183,7 +1334,11 @@ document.getElementById("alertForm").addEventListener("submit",async(e)=>{
       alertThresholdPercent: alertThresholdPercent, // <-- NUEVO CAMPO GUARDADO
       dateFrom:departureRaw?Timestamp.fromDate(new Date(departureRaw+"T00:00:00")):null,
       dateTo:returnRaw?Timestamp.fromDate(new Date(returnRaw+"T00:00:00")):null,
-      flexibleDates:!departureRaw,
+      flexibleDates: premiumMode!=='exact' || !departureRaw,
+      premiumSearchMode: premiumMode,
+      travelMonth: (premiumMode==='month'||premiumMode==='budget') && premiumMonth ? premiumMonth : null,
+      budgetAmount: premiumMode==='budget' && Number.isFinite(premiumBudget) && premiumBudget>0 ? premiumBudget : null,
+      budgetRegion: premiumMode==='budget' ? premiumRegion : 'all',
       isActive:true,
       lastKnownPrice:currentPrice,
       createdAt:serverTimestamp(),
@@ -1197,6 +1352,12 @@ document.getElementById("alertForm").addEventListener("submit",async(e)=>{
     document.getElementById("alertForm").reset();
     // Restaurar el valor por defecto del umbral después de resetear el formulario
     document.getElementById("alertThreshold").value = appConfig.defaultAlertThresholdPercent || 15;
+    if(document.getElementById('alertPremiumMode')) document.getElementById('alertPremiumMode').value='exact';
+    if(document.getElementById('alertPremiumMonth')) document.getElementById('alertPremiumMonth').value='';
+    if(document.getElementById('alertPremiumBudget')) document.getElementById('alertPremiumBudget').value='500';
+    if(document.getElementById('alertPremiumRegion')) document.getElementById('alertPremiumRegion').value='all';
+    if(document.getElementById('alertPremiumBudgetFields')) document.getElementById('alertPremiumBudgetFields').style.display='none';
+    if(document.getElementById('alertPremiumMonth')) document.getElementById('alertPremiumMonth').style.display='none';
     updateAlertPanel();
   }catch(err){
     console.error('[Alertas] Error guardando:',err);
